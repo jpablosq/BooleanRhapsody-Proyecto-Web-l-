@@ -1,8 +1,6 @@
 <?php
-
-$host      ='localhost';
-$db        ='Hellophp';
-$user      ='phpuser';
-$password  ='secret';
-
+    $host = 'localhost';
+    $db = 'proyecto1';
+    $user = 'phpuser';
+    $password = 'Admin12345';
 ?>

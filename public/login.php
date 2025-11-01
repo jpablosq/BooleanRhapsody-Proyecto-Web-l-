@@ -38,9 +38,16 @@
                         <?php if(isset($_SESSION["error"])): ?>
                             <div class= "alert alert-danger alert-diamissible fade show mt-3" role="alert">
                                 <?php echo $_SESSION["error"]; ?>
-                                <!-- <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button> -->
                             </div>
                             <?php unset($_SESSION["error"]); ?>
+                        <?php endif;?>
+                    </span>
+                    <span>
+                        <?php if(isset($_SESSION["success"])): ?>
+                            <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
+                                <?php echo $_SESSION["success"]; ?>
+                            </div>
+                            <?php unset($_SESSION["success"]); ?>
                         <?php endif;?>
                     </span>
                     <h2 class="form-title">Bienvenido de nuevo</h2>
@@ -74,6 +81,25 @@
             </div>
         </div>
     </div>
+    <script>
+    // Funcionalidad para ver la password
+    document.querySelectorAll('.password-toggle').forEach(button => {
+        button.addEventListener('click', function() {
+            const input = this.previousElementSibling;
+            const icon = this.querySelector('i');
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('bi-eye-slash');
+                icon.classList.add('bi-eye');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('bi-eye');
+                icon.classList.add('bi-eye-slash');
+            }
+        });
+    });
+    </script>
 </body>
 </html>
 

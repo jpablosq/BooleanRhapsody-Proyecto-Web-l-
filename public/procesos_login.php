@@ -33,8 +33,7 @@
 
             if($password_hash === $user_data['contrasena']){
                 // Login exitoso
-                $_SESSION["usuario"] = $user_data['nombre_usuario'];
-                $_SESSION["user_id"] = $user_data['id_usuario'];
+                $_SESSION["usuario"] = $user_data;
 
                 // Limpiar cualquier error previo
                 unset($_SESSION["error"]);

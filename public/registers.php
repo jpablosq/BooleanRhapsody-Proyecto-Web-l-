@@ -1,14 +1,14 @@
 <?php
 require_once '../config/start_app.php';
 require_once '../config/functions.php';
-require_once '../config/vehicles_functions.php';
+require_once '../config/registers_funcions.php';
 
 // Verificar autenticación
 checkAuth();
 $usuario = $_SESSION["usuario"];
 
 // Obtener todos los vehiculos
-$vehicles = getAllUserVehicles($usuario['id_usuario']);
+$registers = getAllUserRegisters($usuario['id_usuario']);
 ?>
 
 <!DOCTYPE html>
@@ -16,7 +16,7 @@ $vehicles = getAllUserVehicles($usuario['id_usuario']);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mis Vehículos</title>
+    <title>Mis Solicitudes</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../styles/styles_vehicles.css">
@@ -31,7 +31,7 @@ $vehicles = getAllUserVehicles($usuario['id_usuario']);
             <?php unset($_SESSION["success"]); ?>
         <?php endif;?>
         </span>
-post
+
         <span>
             <?php if(isset($_SESSION["error"])): ?>
                 <div class= "alert alert-danger alert-dismissible fade show mt-3" role="alert">
@@ -44,68 +44,63 @@ post
         <div class="header">
             <div class="header-title">
                 <i class="bi bi-car-front-fill"></i>
-                <h1>Gestión de Vehículos</h1>
+                <h1>Gestión de Registros</h1>
             </div>
-            <button class="btn-back" onclick="window.location.href='vehicles_create.php'">
+            <button class="btn-back" onclick="window.location.href='register.php'">
                 <i class="bi bi-arrow-left"></i>
                 Volver
             </button>
         </div>
 
         <div class="table-container">
-            <table class="vehicles-table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Usuario</th>
-                        <th>Marca</th>
-                        <th>Modelo</th>
-                        <th>Año</th>
-                        <th>Placa</th>
-                        <th>Color</th>
-                        <th>Fecha de Registro</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($vehicles as $vehicle): ?>
-                    <!-- Ejemplo de fila - Aquí irán los datos de la base de datos -->
-                        <tr>
-                            <td><?php echo $vehicle['id_vehiculo']; ?></td>
-                            <td><?php echo $vehicle['nombre_usuario']; ?></td>
-                            <td><?php echo $vehicle['marca']; ?></td>
-                            <td><?php echo $vehicle['modelo']; ?></td>
-                            <td><?php echo $vehicle['anio_fabricacion']; ?></td>
-                            <td><span class="badge-plate"><?php echo $vehicle['placa']; ?></span></td>
-                            <td><?php echo $vehicle['color']; ?></td>
-                            <td><?php echo $vehicle['fecha_registro']; ?></td>
-                            <td>
-                                <div class="action-buttons">
-                                    <a href="vehicles_view.php?id=<?php echo $vehicle['id_vehiculo']; ?>" 
-                                        class="btn-action btn-view" title="Ver">
-                                        <i class="bi bi-eye-fill"></i>
-                                    </a>
+    <table class="vehicles-table">
+        <thead>
+            <tr>
+                <th>ID Registro</th>
+                <th>Usuario</th>
+                <th>Marca</th>
+                <th>Modelo</th>
+                <th>Año</th>
+                <th>Placa</th>
+                <th>Color</th>
+                <th>Estado</th>
+                <th>Fecha de Registro</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($registers as $register): ?>
+            <tr>
+                <td><?php echo $register['id_registro']; ?></td>
+                <td><?php echo $register['nombre_usuario']; ?></td>
+                <td><?php echo $register['marca']; ?></td>
+                <td><?php echo $register['modelo']; ?></td>
+                <td><?php echo $register['anio_fabricacion']; ?></td>
+                <td><span class="badge-plate"><?php echo $register['placa']; ?></span></td>
+                <td><?php echo $register['color']; ?></td>
+                <td><?php echo $register['estado']; ?></td>
+                <td><?php echo $register['fecha_registro']; ?></td>
+                <td>
+                    <div class="action-buttons">
+                        <form action="register_accept.php" method="POST" style="display:inline;">
+                            <input type="hidden" name="id_registro" value="<?php echo $register['id_registro']; ?>">
+                            <button type="submit" class="btn-action btn-delete" title="Aceptar">
+                                <i class="bi bi-check-circle-fill"></i>
+                            </button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+</div>
 
-                                    <a href="vehicles_update.php?id=<?php echo $vehicle['id_vehiculo']; ?>" 
-                                        class="btn-action btn-edit" title="Editar">
-                                        <i class="bi bi-pencil-fill"></i>
-                                    </a>
-
-                                    <button class="btn-action btn-delete" title="Eliminar" onclick="confirmDelete(<?php echo htmlspecialchars($vehicle['id_vehiculo']); ?>, '<?php echo htmlspecialchars($vehicle['marca']); ?>', '<?php echo htmlspecialchars($vehicle['modelo']); ?>')">
-                                        <i class="bi bi-trash-fill"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
-        </div>
 
         <div class="empty-state" style="display: none;">
             <i class="bi bi-car-front"></i>
-            <h3>No hay vehículos registrados</h3>
-            <p>Comienza agregando tu primer vehículo</p>
+            <h3>No hay solicitudes registradas</h3>
+            <p>Comienza agregando tu primer solicitud</p>
             <button class="btn-add-first" onclick="window.location.href='vehicle_create.php'">
                 <i class="bi bi-plus-circle"></i>
                 Agregar Vehículo
@@ -129,7 +124,7 @@ post
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                     <form id="deleteForm" method="POST" action="vehicles_delete.php" style="display: inline;">
                         <input type="hidden" name="id" id="deleteVehicleId">
-                        <button type="submit" class="btn btn-danger"
+                        <button type="submit" class="btn btn-danger">
                             <i class="fas fa-trash"></i> Eliminar
                         </button>
                     </form>

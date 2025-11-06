@@ -1,7 +1,7 @@
 <?php
 require_once '../config/start_app.php';
 require_once '../config/functions.php';
-require_once '../config/vehicles_functions.php';
+require_once '../config/registers_funcions.php';
 
 $errors = [];
 $marca = '';
@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $foto = trim($_POST['foto'] ?? '');
 
    // Validar datos
-    $errors = validateVehicles($marca, $modelo, $anio, $color, $placa, $foto);
+    $errors = validateRegisters($marca, $modelo, $anio, $color, $placa, $foto);
 
     // config foto 
         if (isset($_FILES['photo']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
@@ -47,12 +47,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Si no hay errores, crear el vehiculo
     if (empty($errors)) {
-        if (createVehicle($usuario['id_usuario'], $marca, $modelo, $anio, $color, $placa, $foto)) {
-            $_SESSION['success'] = 'Vehiculo agregado exitosamente.';
-            header('Location: vehicles_create.php');
+        if (createRegisters($usuario['id_usuario'], $marca, $modelo, $anio, $color, $placa, $foto)) {
+            $_SESSION['success'] = 'Solicitud agregada exitosamente.';
+            header('Location: registers_create.php');
             exit();
         } else {
-            $_SESSION['error'] = 'Ocurrió un error al agregar el vehiculo .';
+            $_SESSION['error'] = 'Ocurrió un error al agregar la solicitud  .';
         }
     }
 }
@@ -101,9 +101,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <?php endif;?>
                 </span>
 
-                <h2 class="form-title">Agregar Vehículo</h2>
+                <h2 class="form-title">Solicitud de chofer </h2>
                 <p class="form-subtitle">
-                    Completa la información de tu automotor
+                    Completa la información de tu automotor para convertirte en chofer
                 </p>
                 
                 <form method="POST" id="vehicleForm" enctype="multipart/form-data">
@@ -223,14 +223,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <i class="bi bi-x-lg"></i> Cancelar
                         </button>
                         <button type="submit" class="submit-btn">
-                            <i class="bi bi-check-lg"></i> Agregar Vehículo
+                            <i class="bi bi-check-lg"></i> Agregar Solicitud 
                         </button>
                     </div>
 
                     <!-- Agregando botón para ver vehículos -->
                     <div class="view-vehicles-section">
-                        <button type="button" class="view-vehicles-btn" onclick="window.location.href='vehicles.php'">
-                            <i class="bi bi-car-front"></i> Ver mis vehículos
+                        <button type="button" class="view-vehicles-btn" onclick="window.location.href='registers.php'">
+                            <i class="bi bi-car-front"></i> Ver mis Solicitudes 
                         </button>
                     </div>
                 </form>

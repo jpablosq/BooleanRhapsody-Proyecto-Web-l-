@@ -85,13 +85,13 @@
                 <p>Actualiza tu información personal</p>
             </div>
 
-            <a href="vehicles_create.php" class="card-link">
+            <a href="registers_create.php" class="card-link">
                 <div class="card">
                     <div class="card-icon">
                     <i class="bi bi-car-front"></i>
                     </div>
-                    <h3>Registro de Vehículos</h3>
-                    <p>¿Quieres convertirte en Conductor?</p>
+                    <h3>Aplica para chofer</h3>
+                    <p>¿Quieres convertirte en Conductor en nuestra app?</p>
                 </div>
             </a>
         </div>

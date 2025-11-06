@@ -13,6 +13,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  text-decoration-skip-ink: none;
 }
 
 body {
@@ -20,6 +21,12 @@ body {
   background-color: var(--darker-bg);
   color: var(--text-primary);
   overflow-x: hidden;
+}
+
+a {
+    text-decoration: none;
+    outline: none;
+    color: inherit;
 }
 
 /* Navbar */

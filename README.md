@@ -32,3 +32,22 @@ INSERT INTO Usuarios (nombre, apellidos, cedula, fecha_nacimiento, correo, telef
 VALUES ('Maikel', 'Chaves', '987654321', '2005-03-10', 'maikelch@gmail.com', '88329023', 'mchaves', SHA2('mchaves123', 256));
 ```
 Podemos observar el script para la creación de la tabla Usuarios, donde solicitamos los datos requeridos por el proyecto. Los atributos más destacables son fotografía y rol. Para el primero, optamos por trabajar como de costumbre utilizando la URL de la imagen, de manera que pueda cargarse al usuario correspondiente. En cuanto al rol, teníamos dos opciones: la primera, como se implementó, consiste en definirlo directamente en la base de datos, asignando por defecto el valor 'Pasajero' cuando no se especifica. La segunda opción era gestionarlo mediante una tabla intermedia, lo cual sería útil en caso de requerir nuevos roles en el futuro. Sin embargo, por simplicidad, decidimos utilizar la primera alternativa.
+
+## **Creación del CRUD de vehiculos**
+Siguiendo el mismo estilo del apartado de login/register, creamos una sección donde el usuario con rol de “pasajero” puede registrar su vehículo. Una vez que su solicitud sea aceptada, pasará a tener el rol de “conductor”, lo que le permitirá ofrecer futuros aventones.
+De acuerdo con el modelo de base de datos, esta será la tabla correspondiente a los vehículos
+```sql
+CREATE TABLE Vehiculos (
+    id_vehiculo SERIAL PRIMARY KEY,
+    id_usuario INT REFERENCES Usuarios(id_usuario) ON DELETE CASCADE,
+    marca VARCHAR(50) NOT NULL,
+    modelo VARCHAR(50) NOT NULL,
+    anio_fabricacion INT NOT NULL,
+    color VARCHAR(30),
+    placa VARCHAR(20) UNIQUE NOT NULL,
+    fotografia VARCHAR(255),
+    fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+En el campo que referencia al usuario propietario del vehículo, agregamos la cláusula ON DELETE CASCADE. Esto permite que, al eliminar un usuario de la aplicación, se eliminen automáticamente todos los vehículos asociados, evitando así posibles errores de integridad en la base de datos.
+Posteriormente, añadimos los campos solicitados en el requerimiento para completar la estructura de la tabla

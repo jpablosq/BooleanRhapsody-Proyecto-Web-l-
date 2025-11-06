@@ -84,7 +84,8 @@
                 <h3>Mi Perfil</h3>
                 <p>Actualiza tu información personal</p>
             </div>
-            <a href="registro_vehiculo.php" class="card-link" aria-label="Registro de vehículos, conviértete en conductor">
+
+            <a href="vehicles_create.php" class="card-link">
                 <div class="card">
                     <div class="card-icon">
                     <i class="bi bi-car-front"></i>

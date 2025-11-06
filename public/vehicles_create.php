@@ -11,6 +11,7 @@ $color = '';
 $placa = '';
 $foto = '';
 
+$usuario = $_SESSION["usuario"];
 
 // Si se envió el formulario
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -24,9 +25,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $foto = trim($_POST['foto'] ?? '');
 
    // Validar datos
-    $errors = validateVehiculos($marca, $modelo, $anio, $color, $placa, $foto);
+    $errors = validateVehicles($marca, $modelo, $anio, $color, $placa, $foto);
 
-    // config foto 
     // config foto 
         if (isset($_FILES['photo']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
         $uploadDir = __DIR__ . '/../public/uploads/';
@@ -47,12 +47,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Si no hay errores, crear el vehiculo
     if (empty($errors)) {
-        if (createVehiculo($marca, $modelo, $anio, $color, $placa, $foto)) {
+        if (createVehicle($usuario['id_usuario'], $marca, $modelo, $anio, $color, $placa, $foto)) {
             $_SESSION['success'] = 'Vehiculo agregado exitosamente.';
-            header('Location: index.php');
+            header('Location: vehicles_create.php');
             exit();
         } else {
-            $errors[] = 'Ocurrió un error al agregar el vehiculo .';
+            $_SESSION['error'] = 'Ocurrió un error al agregar el vehiculo .';
         }
     }
 }
@@ -63,8 +63,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Agregar Vehículo - Aventones</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="../styles/styles_vehiculos.css">
+    <link rel="stylesheet" href="../styles/styles_vehicles_create.css">
 </head>
 <body>
 <div class="auth-container">
@@ -82,19 +83,48 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="right-section">
         <div class="form-container">
             <div class="form-content">
+                <span>
+                <?php if(isset($_SESSION["success"])): ?>
+                    <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
+                        <?php echo $_SESSION["success"]; ?>
+                    </div>
+                    <?php unset($_SESSION["success"]); ?>
+                <?php endif;?>
+                </span>
+
+                <span>
+                    <?php if(isset($_SESSION["error"])): ?>
+                        <div class= "alert alert-danger alert-diamissible fade show mt-3" role="alert">
+                            <?php echo $_SESSION["error"]; ?>
+                        </div>
+                        <?php unset($_SESSION["error"]); ?>
+                    <?php endif;?>
+                </span>
+
                 <h2 class="form-title">Agregar Vehículo</h2>
                 <p class="form-subtitle">
                     Completa la información de tu automotor
                 </p>
-
+                
                 <form method="POST" id="vehicleForm" enctype="multipart/form-data">
                     <!-- Marca -->
                     <div class="input-group">
                         <label class="input-label">
                             <i class="bi bi-car-front-fill"></i> Marca
                         </label>
-                        <input type="text" class="input" name="marca" placeholder="Ej: Toyota, Honda, Nissan" maxlength="50">
-                        <span class="field-error"></span>
+                        <input type="text" class="input" name="marca" placeholder="Ej: Toyota, Honda, Nissan" maxlength="50" value="<?= htmlspecialchars($marca) ?>">
+                            <!-- span para darle estilo al error -->
+                            <span class="field-error">
+                            <?php 
+                            foreach ($errors as $error) {
+                                // Busca donde haya un error que diga o contenga "marca" y lo imprime
+                                if (stripos($error, 'marca') !== false) {
+                                    echo htmlspecialchars($error);
+                                    break;
+                                }
+                            }
+                            ?>
+                            </span>
                     </div>
 
                     <!-- Modelo -->
@@ -102,8 +132,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <label class="input-label">
                             <i class="bi bi-speedometer2"></i> Modelo
                         </label>
-                        <input type="text" class="input" name="modelo" placeholder="Ej: Corolla, Civic, Hilux" maxlength="50">
-                        <span class="field-error"></span>
+                        <input type="text" class="input" name="modelo" placeholder="Ej: Corolla, Civic, Hilux" maxlength="50" value="<?= htmlspecialchars($modelo) ?>">
+                        <span class="field-error">
+                            <?php 
+                            foreach ($errors as $error) {
+                                // Busca donde haya un error que diga o contenga "modelo" y lo imprime
+                                if (stripos($error, 'modelo') !== false) {
+                                    echo htmlspecialchars($error);
+                                    break;
+                                }
+                            }
+                            ?>
+                            </span>
                     </div>
 
                     <!-- Año y Color -->
@@ -112,15 +152,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <label class="input-label">
                                 <i class="bi bi-calendar-event"></i> Año
                             </label>
-                            <input type="number" class="input" name="anio" placeholder="Ej: 2020" min="1900" max="2025">
-                            <span class="field-error"></span>
+                            <input type="number" class="input" name="anio" placeholder="Ej: 2020" min="1900" max="2025" value="<?= htmlspecialchars($anio) ?>">
+                            <span class="field-error">
+                            <?php 
+                            foreach ($errors as $error) {
+                                // Busca donde haya un error que diga o contenga "año" y lo imprime
+                                if (stripos($error, 'año') !== false) {
+                                    echo htmlspecialchars($error);
+                                    break;
+                                }
+                            }
+                            ?>
+                            </span>
                         </div>
                         <div class="input-wrapper">
                             <label class="input-label">
                                 <i class="bi bi-palette-fill"></i> Color
                             </label>
-                            <input type="text" class="input" name="color" placeholder="Ej: Blanco, Negro, Rojo" maxlength="30">
-                            <span class="field-error"></span>
+                            <input type="text" class="input" name="color" placeholder="Ej: Blanco, Negro, Rojo" maxlength="30" value="<?= htmlspecialchars($color) ?>">
+                            <span class="field-error">
+                            <?php 
+                            foreach ($errors as $error) {
+                                // Busca donde haya un error que diga o contenga "color" y lo imprime
+                                if (stripos($error, 'color') !== false) {
+                                    echo htmlspecialchars($error);
+                                    break;
+                                }
+                            }
+                            ?>
+                            </span>
                         </div>
                     </div>
 
@@ -129,8 +189,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <label class="input-label">
                             <i class="bi bi-credit-card-2-front"></i> Placa
                         </label>
-                        <input type="text" class="input" name="placa" placeholder="Ej: ABC-1234" maxlength="20" style="text-transform: uppercase;">
-                        <span class="field-error"></span>
+                        <input type="text" class="input" name="placa" placeholder="Ej: ABC-1234" maxlength="20" style="text-transform: uppercase;" value="<?= htmlspecialchars($placa) ?>">
+                        <span class="field-error">
+                        <?php 
+                            foreach ($errors as $error) {
+                                // Busca donde haya un error que diga o contenga "placa" y lo imprime
+                                if (stripos($error, 'placa') !== false) {
+                                    echo htmlspecialchars($error);
+                                    break;
+                                }
+                            }
+                        ?>
+                        </span>
                     </div>
 
                     <!-- Fotografía -->
@@ -152,8 +222,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <button type="button" class="cancel-btn" onclick="window.location.href='index.php'">
                             <i class="bi bi-x-lg"></i> Cancelar
                         </button>
-                        <button type="submit" class="submit-btn" onclick="window.location.href='index.php'">
+                        <button type="submit" class="submit-btn">
                             <i class="bi bi-check-lg"></i> Agregar Vehículo
+                        </button>
+                    </div>
+
+                    <!-- Agregando botón para ver vehículos -->
+                    <div class="view-vehicles-section">
+                        <button type="button" class="view-vehicles-btn" onclick="window.location.href='vehicles.php'">
+                            <i class="bi bi-car-front"></i> Ver mis vehículos
                         </button>
                     </div>
                 </form>

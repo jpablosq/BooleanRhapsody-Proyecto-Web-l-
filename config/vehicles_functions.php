@@ -17,85 +17,113 @@ function getConnection() {
 }
 
 // Obtener todos los vehiculos
-function getAllvehiculos() {
+function getAllVehicles() {
     $pdo = getConnection();
     $stmt = $pdo->query('SELECT * FROM vehiculos ORDER BY placa DESC');
     return $stmt->fetchAll();
 }
 
-// Obtener vehiculos por ID
-function getvehiculosById($id) {
+// Obtener todos los vehiculos de un usuario
+function getAllUserVehicles($id) {
     $pdo = getConnection();
-    $stmt = $pdo->prepare("SELECT * FROM vehiculos WHERE id = ?");
+    $stmt = $pdo->prepare('SELECT v.*, u.nombre, u.apellidos, u.nombre_usuario FROM vehiculos v INNER JOIN Usuarios u ON v.id_usuario = u.id_usuario WHERE v.id_usuario = ?');
+    $stmt->execute([$id]);
+    return $stmt->fetchAll();
+}
+
+// Obtener vehiculos por ID
+function getVehiclesById($id) {
+    $pdo = getConnection();
+    $stmt = $pdo->prepare("SELECT v.*, u.nombre, u.apellidos, u.nombre_usuario FROM vehiculos v INNER JOIN Usuarios u ON v.id_usuario = u.id_usuario WHERE v.id_vehiculo = ?");
     $stmt->execute([$id]);
     return $stmt->fetch();
 }
 
 // Eliminar vehiculos
-function deletevehiculos($id) {
+function deleteVehicles($id) {
     $pdo = getConnection();
-    $stmt = $pdo->prepare("DELETE FROM vehiculos WHERE id = ?");
+    $stmt = $pdo->prepare("DELETE FROM vehiculos WHERE id_vehiculo = ?");
     return $stmt->execute([$id]);
 }
 
 // Crear nuevo vehiculo
-function createVehiculo($marca, $modelo, $anio, $color, $placa, $foto) {
+function createVehicle($idUsuario, $marca, $modelo, $anio, $color, $placa, $foto) {
     $pdo = getConnection();
-
-    $stmt = $pdo->prepare("INSERT INTO vehiculos (
+ 
+    $stmt = $pdo->prepare("INSERT INTO Vehiculos (
+        id_usuario,
         marca,
         modelo,
-        anio,
+        anio_fabricacion,
         color,
         placa,
-        foto
+        fotografia
     ) VALUES (
         ?, 
         ?, 
         ?,
         ?,
         ?,
+        ?,
         ?
     )");
-    return $stmt->execute([$marca, $modelo, $anio, $color, $placa, $foto]);
+    return $stmt->execute([$idUsuario, $marca, $modelo, $anio, $color, $placa, $foto]);
 }
 
 //Modificar Vehiculo
-function updateVehiculo($id, $marca, $modelo, $anio, $color, $placa, $foto) {
+function updateVehicle($id, $marca, $modelo, $anio, $color, $placa, $foto) {
     $pdo = getConnection();
 
     $stmt = $pdo->prepare("UPDATE vehiculos SET 
         marca = ?, 
         modelo = ?, 
-        anio = ?, 
+        anio_fabricacion = ?, 
         color = ?, 
         placa = ?, 
-        foto = ?
-    WHERE id = ?");
+        fotografia = ?
+    WHERE id_vehiculo = ?");
 
     return $stmt->execute([$marca, $modelo, $anio, $color, $placa, $foto, $id]);
 }
 
 // Validar datos del vehiculo
-function validateVehiculos($marca, $modelo, $anio, $color, $placa, $foto) {
+function validateVehicles($marca, $modelo, $anio, $color, $placa) {
     // Obtener todos los vehiculo
     $errors = [];
 
-    foreach (getAllvehiculos() as $vehiculo){
+    foreach (getAllVehicles() as $vehiculo){    
         if($vehiculo['placa'] === $placa){
             $errors[] = "Esta placa ya está registrada";
         } 
     }
 
-
-// Validar placa (puedes ajustar la longitud según tu país)
+    // Validar placa
     if (empty(trim($placa))) {
         $errors[] = "La placa es requerida";
     }   elseif (!preg_match('/^[A-Z0-9-]{3,10}$/i', $placa)) {
         $errors[] = "La placa debe contener numeros o y letras  (9 a 12 dígitos)";
     }
 
+    // Validar marca
+    if (empty(trim($marca))) {
+        $errors[] = "La marca es requerida";
+    }
+
+    // Validar modelo
+    if (empty(trim($modelo))) {
+        $errors[] = "El modelo es requerido";
+    }
+
+    // Validar fabricacion
+    if (empty(trim($anio))) {
+        $errors[] = "El año de fabricación es requerido";
+    } elseif ($anio < 2004 || $anio > date('Y') + 1) {
+        $errors[] = "El año de fabricación no es válido";
+    }
+
+    if (empty(trim($color))) {
+        $errors[] = "El color es requerido";
+    }
+
 return $errors;
 }
-
-

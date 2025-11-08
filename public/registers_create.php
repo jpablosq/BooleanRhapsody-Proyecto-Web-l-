@@ -1,7 +1,7 @@
 <?php
 require_once '../config/start_app.php';
 require_once '../config/functions.php';
-require_once '../config/registers_funcions.php';
+require_once '../config/my_registers_functions.php';
 
 $errors = [];
 $marca = '';
@@ -229,7 +229,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                     <!-- Agregando botón para ver vehículos -->
                     <div class="view-vehicles-section">
-                        <button type="button" class="view-vehicles-btn" onclick="window.location.href='registers.php'">
+                        <button type="button" class="view-vehicles-btn" onclick="window.location.href='my_registers.php'">
                             <i class="bi bi-car-front"></i> Ver mis Solicitudes 
                         </button>
                     </div>

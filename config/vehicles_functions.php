@@ -46,30 +46,6 @@ function deleteVehicles($id) {
     return $stmt->execute([$id]);
 }
 
-// Crear nuevo vehiculo
-function createVehicle($idUsuario, $marca, $modelo, $anio, $color, $placa, $foto) {
-    $pdo = getConnection();
- 
-    $stmt = $pdo->prepare("INSERT INTO Vehiculos (
-        id_usuario,
-        marca,
-        modelo,
-        anio_fabricacion,
-        color,
-        placa,
-        fotografia
-    ) VALUES (
-        ?, 
-        ?, 
-        ?,
-        ?,
-        ?,
-        ?,
-        ?
-    )");
-    return $stmt->execute([$idUsuario, $marca, $modelo, $anio, $color, $placa, $foto]);
-}
-
 //Modificar Vehiculo
 function updateVehicle($id, $marca, $modelo, $anio, $color, $placa, $foto) {
     $pdo = getConnection();

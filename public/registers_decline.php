@@ -13,21 +13,29 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 $id = intval($_POST['id'] ?? 0);
+$motivo = trim($_POST['motivo_hidden']);
 
-// Verificar que el producto existe
-$vehicle = getRegistersByid($id);
+// Verfica que el motivo no esté vacío
+if (empty($motivo)) {
+    $_SESSION['error'] = 'Debes ingresar un motivo para rechazar.';
+    header('Location: registers.php');
+    exit();
+}
 
-if (!$vehicle) {
+// Verificar que el registro existe
+$register = getRegistersByid($id);
+
+if (!$register) {
     $_SESSION['error'] = 'Registro no encontrado';
     header('Location: registers.php');
     exit();
 }
 
 
-if (aceptarRegister($id)) {
-    $_SESSION['success'] = 'El vehiculo a sido aceptado ';
+if (rechazarRegister($id, $motivo)) {
+    $_SESSION['success'] = 'El vehiculo a sido rechazado ';
 } else {
-    $_SESSION['error'] = 'Error al aceptar el vehiculo';
+    $_SESSION['error'] = 'Error al rechazar el vehiculo';
 }
 
 header('Location: registers.php');

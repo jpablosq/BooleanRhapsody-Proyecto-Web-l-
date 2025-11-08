@@ -80,36 +80,6 @@ function createRegisters($idUsuario, $marca, $modelo, $anio, $color, $placa, $fo
     return $stmt->execute([$idUsuario, $marca, $modelo, $anio, $color, $placa, $foto]);
 }
 
-// Modificar registro
-function updateRegisters($id, $marca, $modelo, $anio, $color, $placa, $foto) {
-    $pdo = getConnection();
-
-    $stmt = $pdo->prepare("UPDATE Registros SET 
-        marca = ?, 
-        modelo = ?, 
-        anio_fabricacion = ?, 
-        color = ?, 
-        placa = ?, 
-        fotografia = ?
-    WHERE id_registro = ?");
-
-    return $stmt->execute([$marca, $modelo, $anio, $color, $placa, $foto, $id]);
-}
-
-//Modfificar el estado a 'aceptado'
-function aceptarRegister($id) {
-    $pdo = getConnection();
-    $stmt = $pdo->prepare("UPDATE Registros SET estado = 'aceptado' WHERE id_registro = ?");
-    return $stmt->execute([$id]);
-}
-
-//Modfificar el estado a 'rechazado'
-function rechazarRegister($id) {
-    $pdo = getConnection();
-    $stmt = $pdo->prepare("UPDATE Registros SET estado = 'rechazado' WHERE id_registro = ?");
-    return $stmt->execute([$id]);
-}
-
 // Validar datos del registro
 function validateRegisters($marca, $modelo, $anio, $color, $placa) {
     $errors = [];

@@ -1,13 +1,14 @@
 <?php
-    require_once '../config/start_app.php';
+require_once '../config/start_app.php';
 
-    // Si el usuario no ha iniciado sesión, redirigir al login
-    if(!isset($_SESSION["usuario"])){
-        header("Location: login.php");
-        exit();
-    }
+// Si el usuario no ha iniciado sesión, redirigir al login
+if (!isset($_SESSION["usuario"])) {
+    header("Location: login.php");
+    exit();
+}
 
-    $usuario = $_SESSION["usuario"];
+$usuario = $_SESSION["usuario"];
+$rol = $usuario['rol'] ?? 'pasajero'; // Por si acaso no está definido
 ?>
 
 <!DOCTYPE html>
@@ -31,10 +32,10 @@
                 <div class="user-info">
                     <span class="username"><?php echo htmlspecialchars($usuario['nombre_usuario']); ?></span>
                     <div class="user-avatar">
-                        <?php if(!empty($usuario['fotografia'])): ?>
-                          <img src="uploads/<?php echo htmlspecialchars($usuario['fotografia']); ?>" alt="Foto de perfil">
+                        <?php if (!empty($usuario['fotografia'])): ?>
+                            <img src="uploads/<?php echo htmlspecialchars($usuario['fotografia']); ?>" alt="Foto de perfil">
                         <?php else: ?>
-                          <i class="bi bi-person-circle"></i>
+                            <i class="bi bi-person-circle"></i>
                         <?php endif; ?>
                     </div>
                 </div>
@@ -53,47 +54,110 @@
         </div>
 
         <div class="content-grid">
-            <div class="card">
-                <div class="card-icon">
-                    <i class="bi bi-search"></i>
-                </div>
-                <h3>Buscar Aventones</h3>
-                <p>Encuentra viajes disponibles a tu destino</p>
-            </div>
-
-            <div class="card">
-                <div class="card-icon">
-                    <i class="bi bi-plus-circle"></i>
-                </div>
-                <h3>Publicar Viaje</h3>
-                <p>Comparte tu viaje y ahorra en gasolina</p>
-            </div>
-
-            <div class="card">
-                <div class="card-icon">
-                    <i class="bi bi-clock-history"></i>
-                </div>
-                <h3>Mis Viajes</h3>
-                <p>Revisa tu historial de aventones</p>
-            </div>
-
-            <div class="card">
-                <div class="card-icon">
-                    <i class="bi bi-person"></i>
-                </div>
-                <h3>Mi Perfil</h3>
-                <p>Actualiza tu información personal</p>
-            </div>
-
-            <a href="registers_create.php" class="card-link">
+            <?php if ($rol === 'Administrador'): ?>
+                <!-- ADMIN puede ver todo -->
                 <div class="card">
-                    <div class="card-icon">
-                    <i class="bi bi-car-front"></i>
-                    </div>
-                    <h3>Aplica para chofer</h3>
-                    <p>¿Quieres convertirte en Conductor en nuestra app?</p>
+                    <div class="card-icon"><i class="bi bi-search"></i></div>
+                    <h3>Buscar Aventones</h3>
+                    <p>Encuentra viajes disponibles a tu destino</p>
                 </div>
-            </a>
+
+                <div class="card">
+                    <div class="card-icon"><i class="bi bi-plus-circle"></i></div>
+                    <h3>Publicar Viaje</h3>
+                    <p>Comparte tu viaje y ahorra en gasolina</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon"><i class="bi bi-clock-history"></i></div>
+                    <h3>Mis Viajes</h3>
+                    <p>Revisa tu historial de aventones</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon"><i class="bi bi-person"></i></div>
+                    <h3>Mi Perfil</h3>
+                    <p>Actualiza tu información personal</p>
+                </div>
+
+                <a href="registers_create.php" class="card-link">
+                    <div class="card">
+                        <div class="card-icon"><i class="bi bi-car-front"></i></div>
+                        <h3>Aplica para chofer</h3>
+                        <p>¿Quieres convertirte en Conductor en nuestra app?</p>
+                    </div>
+                </a>
+
+                <a href="registers.php" class="card-link">
+                    <div class="card">
+                        <div class="card-icon"><i class="bi bi-car-front"></i></div>
+                        <h3>Aprobar solicitudes</h3>
+                        <p>Aprueba o rechaza solicitudes de conductores</p>
+                    </div>
+                </a>
+
+            <?php elseif ($rol === 'Chofer'): ?>
+                <!-- CHOFER puede ver todo excepto "Aprobar solicitudes" -->
+                <div class="card">
+                    <div class="card-icon"><i class="bi bi-search"></i></div>
+                    <h3>Buscar Aventones</h3>
+                    <p>Encuentra viajes disponibles a tu destino</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon"><i class="bi bi-plus-circle"></i></div>
+                    <h3>Publicar Viaje</h3>
+                    <p>Comparte tu viaje y ahorra en gasolina</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon"><i class="bi bi-clock-history"></i></div>
+                    <h3>Mis Viajes</h3>
+                    <p>Revisa tu historial de aventones</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon"><i class="bi bi-person"></i></div>
+                    <h3>Mi Perfil</h3>
+                    <p>Actualiza tu información personal</p>
+                </div>
+
+                <a href="registers_create.php" class="card-link">
+                    <div class="card">
+                        <div class="card-icon"><i class="bi bi-car-front"></i></div>
+                        <h3>Registra otro vehiculo</h3>
+                        <p>¿Quieres registrar otro vehiculo en nuestra app?</p>
+                    </div>
+                </a>
+
+            <?php else: ?>
+                <!-- PASAJERO solo puede ver Buscar, Mis viajes y Mi perfil -->
+                <div class="card">
+                    <div class="card-icon"><i class="bi bi-search"></i></div>
+                    <h3>Buscar Aventones</h3>
+                    <p>Encuentra viajes disponibles a tu destino</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon"><i class="bi bi-clock-history"></i></div>
+                    <h3>Mis Viajes</h3>
+                    <p>Revisa tu historial de aventones</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon"><i class="bi bi-person"></i></div>
+                    <h3>Mi Perfil</h3>
+                    <p>Actualiza tu información personal</p>
+                </div>
+
+                <a href="registers_create.php" class="card-link">
+                    <div class="card">
+                        <div class="card-icon"><i class="bi bi-car-front"></i></div>
+                        <h3>Aplica para chofer</h3>
+                        <p>¿Quieres convertirte en Conductor en nuestra app?</p>
+                    </div>
+                </a>
+            <?php endif; ?>
         </div>
     </main>
 </body>

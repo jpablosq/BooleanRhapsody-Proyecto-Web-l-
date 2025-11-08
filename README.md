@@ -51,3 +51,22 @@ CREATE TABLE Vehiculos (
 ```
 En el campo que referencia al usuario propietario del vehículo, agregamos la cláusula ON DELETE CASCADE. Esto permite que, al eliminar un usuario de la aplicación, se eliminen automáticamente todos los vehículos asociados, evitando así posibles errores de integridad en la base de datos.
 Posteriormente, añadimos los campos solicitados en el requerimiento para completar la estructura de la tabla
+
+## **Creación del CRUD de registros**
+Siguiendo el mismo estilo del los demas apartados, el usuario que mande la solicitud el vehiculo pasara por esta tabla a espere de que un admin la acepte
+```sql
+CREATE TABLE Registros (
+    id_registro SERIAL PRIMARY KEY,
+    id_usuario INT REFERENCES Usuarios(id_usuario) ON DELETE CASCADE,
+    marca VARCHAR(50) NOT NULL,
+    modelo VARCHAR(50) NOT NULL,
+    anio_fabricacion INT NOT NULL,
+    color VARCHAR(30),
+    placa VARCHAR(20) UNIQUE NOT NULL,
+    fotografia VARCHAR(255),
+    descripcion VARCHAR(300) NOT NULL DEFAULT '',
+    fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    estado VARCHAR(30) DEFAULT 'pendiente'
+);
+```
+A diferencia de vehiculos solo se agrega el  y la descripcion nuevos, optamos en hacerlo con tablas diferentes para que alguien de mayor rango pueda ver todas las solicitudes y los motivos del porque fueron aprobadas o rechazadas sin necesidad de tener que ir a la tabla de vehiculos una vez este aceptado se agregara el registro a la tabla vehiculos

@@ -99,6 +99,30 @@ body {
   box-shadow: var(--shadow-md);
 }
 
+.btn-accept {
+  background: #d1fae5;
+  color: #065f46;      
+}
+
+.btn-accept:hover {
+  background: #10b981; 
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-delete {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.btn-delete:hover {
+  background: #ef4444;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
 .btn-back {
   background: var(--surface-light);
   color: var(--white);

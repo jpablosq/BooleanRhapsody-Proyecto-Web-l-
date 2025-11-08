@@ -19,7 +19,7 @@ $vehicles = getAllUserVehicles($usuario['id_usuario']);
     <title>Mis Vehículos</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../styles/styles_vehicles.css">
+    <link rel="stylesheet" href="../styles/styles_vehiclesAndRegisters.css">
 </head>
 <body>
     <div class="container">
@@ -31,7 +31,7 @@ $vehicles = getAllUserVehicles($usuario['id_usuario']);
             <?php unset($_SESSION["success"]); ?>
         <?php endif;?>
         </span>
-post
+
         <span>
             <?php if(isset($_SESSION["error"])): ?>
                 <div class= "alert alert-danger alert-dismissible fade show mt-3" role="alert">
@@ -129,7 +129,7 @@ post
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                     <form id="deleteForm" method="POST" action="vehicles_delete.php" style="display: inline;">
                         <input type="hidden" name="id" id="deleteVehicleId">
-                        <button type="submit" class="btn btn-danger"
+                        <button type="submit" class="btn btn-danger">
                             <i class="fas fa-trash"></i> Eliminar
                         </button>
                     </form>

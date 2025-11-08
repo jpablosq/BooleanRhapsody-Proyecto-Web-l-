@@ -199,6 +199,19 @@ body {
   transform: scale(1.1);
 }
 
+.btn-accept {
+  background: #d1fae5;
+  color: #065f46;      
+  border: none;
+  transition: all 0.2s ease-in-out;
+}
+
+.btn-accept:hover {
+  background: #10b981; 
+  color: white;
+  transform: scale(1.1);
+}
+
 .btn-delete {
   background: #fee2e2;
   color: #991b1b;
@@ -262,6 +275,19 @@ body {
 #deleteModal h5,
 #deleteModal p,
 #deleteModal strong {
+    color: #000 !important;
+}
+
+#declineModal h5,
+#declineModal p,
+#declineModal strong,
+#declineModal label {
+    color: #000 !important;
+}
+
+#acceptModal h5,
+#acceptModal p,
+#acceptModal strong {
     color: #000 !important;
 }
 

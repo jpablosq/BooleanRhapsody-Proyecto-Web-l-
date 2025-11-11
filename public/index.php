@@ -57,21 +57,27 @@ $rol = $usuario['rol'] ?? 'pasajero'; // Por si acaso no está definido
             <?php if ($rol === 'Administrador'): ?>
                 <!-- ADMIN puede ver todo -->
                 <div class="card">
-                    <div class="card-icon"><i class="bi bi-search"></i></div>
-                    <h3>Buscar Aventones</h3>
-                    <p>Encuentra viajes disponibles a tu destino</p>
+                    <a href="search.php" class="card-link">
+                        <div class="card-icon"><i class="bi bi-search"></i></div>
+                        <h3>Buscar Aventones</h3>
+                        <p>Encuentra viajes disponibles a tu destino</p>
+                    </a>
                 </div>
 
                 <div class="card">
-                    <div class="card-icon"><i class="bi bi-plus-circle"></i></div>
-                    <h3>Publicar Viaje</h3>
-                    <p>Comparte tu viaje y ahorra en gasolina</p>
+                    <a href="raids.php" class="card-link">
+                        <div class="card-icon"><i class="bi bi-plus-circle"></i></div>
+                        <h3>Publicar Viaje</h3>
+                        <p>Comparte tu viaje </p>
+                    </a>
                 </div>
 
                 <div class="card">
-                    <div class="card-icon"><i class="bi bi-clock-history"></i></div>
-                    <h3>Mis Viajes</h3>
-                    <p>Revisa tu historial de aventones</p>
+                    <a href="inbox.php" class="card-link">
+                        <div class="card-icon"><i class="bi bi-clock-history"></i></div>
+                        <h3>Viajes en linea</h3>
+                        <p>Revisa los viajes disponibles </p>
+                    </a>
                 </div>
 
                 <div class="card">
@@ -99,21 +105,28 @@ $rol = $usuario['rol'] ?? 'pasajero'; // Por si acaso no está definido
             <?php elseif ($rol === 'Chofer'): ?>
                 <!-- CHOFER puede ver todo excepto "Aprobar solicitudes" -->
                 <div class="card">
-                    <div class="card-icon"><i class="bi bi-search"></i></div>
-                    <h3>Buscar Aventones</h3>
-                    <p>Encuentra viajes disponibles a tu destino</p>
+                    <a href="search.php" class="card-link">
+                        <div class="card-icon"><i class="bi bi-search"></i></div>
+                        <h3>Buscar Aventones</h3>
+                        <p>Encuentra viajes disponibles a tu destino</p>
+                    </a>
                 </div>
 
                 <div class="card">
-                    <div class="card-icon"><i class="bi bi-plus-circle"></i></div>
-                    <h3>Publicar Viaje</h3>
-                    <p>Comparte tu viaje y ahorra en gasolina</p>
+                    <a href="raids.php" class="card-link">
+                        <div class="card-icon"><i class="bi bi-plus-circle"></i></div>
+                        <h3>Publicar Viaje</h3>
+                        <p>Comparte tu viaje </p>
+                    </a>
                 </div>
 
+
                 <div class="card">
-                    <div class="card-icon"><i class="bi bi-clock-history"></i></div>
-                    <h3>Mis Viajes</h3>
-                    <p>Revisa tu historial de aventones</p>
+                    <a href="inbox.php" class="card-link">
+                        <div class="card-icon"><i class="bi bi-clock-history"></i></div>
+                        <h3>Viajes en linea</h3>
+                        <p>Revisa los viajes disponibles </p>
+                    </a>
                 </div>
 
                 <div class="card">
@@ -133,15 +146,19 @@ $rol = $usuario['rol'] ?? 'pasajero'; // Por si acaso no está definido
             <?php else: ?>
                 <!-- PASAJERO solo puede ver Buscar, Mis viajes y Mi perfil -->
                 <div class="card">
-                    <div class="card-icon"><i class="bi bi-search"></i></div>
-                    <h3>Buscar Aventones</h3>
-                    <p>Encuentra viajes disponibles a tu destino</p>
+                    <a href="search.php" class="card-link">
+                        <div class="card-icon"><i class="bi bi-search"></i></div>
+                        <h3>Buscar Aventones</h3>
+                        <p>Encuentra viajes disponibles a tu destino</p>
+                    </a>
                 </div>
 
                 <div class="card">
-                    <div class="card-icon"><i class="bi bi-clock-history"></i></div>
-                    <h3>Mis Viajes</h3>
-                    <p>Revisa tu historial de aventones</p>
+                    <a href="inbox.php" class="card-link">
+                        <div class="card-icon"><i class="bi bi-clock-history"></i></div>
+                        <h3>Viajes en linea</h3>
+                        <p>Revisa los viajes disponibles </p>
+                    </a>
                 </div>
 
                 <div class="card">

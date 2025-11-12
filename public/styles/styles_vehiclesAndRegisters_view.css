@@ -32,7 +32,8 @@ body {
   color: var(--text-primary);
 }
 
-.container {
+/* Renamed .container to .main-container to avoid conflicts with Bootstrap's .container class */
+.main-container {
   max-width: 1200px;
   margin: 0 auto;
   background: var(--surface);
@@ -101,11 +102,11 @@ body {
 
 .btn-accept {
   background: #d1fae5;
-  color: #065f46;      
+  color: #065f46;
 }
 
 .btn-accept:hover {
-  background: #10b981; 
+  background: #10b981;
   color: white;
   transform: translateY(-2px);
   box-shadow: var(--shadow-md);
@@ -299,6 +300,13 @@ body {
   background: #d97706;
   transform: translateY(-2px);
   box-shadow: var(--shadow-md);
+}
+
+/* Styles del modal */
+#deleteModal h5,
+#deleteModal p,
+#deleteModal strong {
+  color: #000 !important;
 }
 
 @keyframes fadeIn {

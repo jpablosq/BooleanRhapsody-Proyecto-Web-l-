@@ -56,16 +56,9 @@ $rol = $usuario['rol'] ?? 'pasajero'; // Por si acaso no está definido
         <div class="content-grid">
             <?php if ($rol === 'Administrador'): ?>
                 <!-- ADMIN puede ver todo -->
-                <div class="card">
-                    <a href="search.php" class="card-link">
-                        <div class="card-icon"><i class="bi bi-search"></i></div>
-                        <h3>Buscar Aventones</h3>
-                        <p>Encuentra viajes disponibles a tu destino</p>
-                    </a>
-                </div>
 
                 <div class="card">
-                    <a href="raids.php" class="card-link">
+                    <a href="rides_create.php" class="card-link">
                         <div class="card-icon"><i class="bi bi-plus-circle"></i></div>
                         <h3>Publicar Viaje</h3>
                         <p>Comparte tu viaje </p>
@@ -73,8 +66,8 @@ $rol = $usuario['rol'] ?? 'pasajero'; // Por si acaso no está definido
                 </div>
 
                 <div class="card">
-                    <a href="inbox.php" class="card-link">
-                        <div class="card-icon"><i class="bi bi-clock-history"></i></div>
+                    <a href="search_rides.php" class="card-link">
+                        <div class="card-icon"><i class="bi bi-search"></i></div>
                         <h3>Viajes en linea</h3>
                         <p>Revisa los viajes disponibles </p>
                     </a>
@@ -104,16 +97,9 @@ $rol = $usuario['rol'] ?? 'pasajero'; // Por si acaso no está definido
 
             <?php elseif ($rol === 'Chofer'): ?>
                 <!-- CHOFER puede ver todo excepto "Aprobar solicitudes" -->
-                <div class="card">
-                    <a href="search.php" class="card-link">
-                        <div class="card-icon"><i class="bi bi-search"></i></div>
-                        <h3>Buscar Aventones</h3>
-                        <p>Encuentra viajes disponibles a tu destino</p>
-                    </a>
-                </div>
 
                 <div class="card">
-                    <a href="raids.php" class="card-link">
+                    <a href="rides_create.php" class="card-link">
                         <div class="card-icon"><i class="bi bi-plus-circle"></i></div>
                         <h3>Publicar Viaje</h3>
                         <p>Comparte tu viaje </p>
@@ -122,8 +108,8 @@ $rol = $usuario['rol'] ?? 'pasajero'; // Por si acaso no está definido
 
 
                 <div class="card">
-                    <a href="inbox.php" class="card-link">
-                        <div class="card-icon"><i class="bi bi-clock-history"></i></div>
+                    <a href="search_rides.php" class="card-link">
+                        <div class="card-icon"><i class="bi bi-search"></i></div>
                         <h3>Viajes en linea</h3>
                         <p>Revisa los viajes disponibles </p>
                     </a>
@@ -135,6 +121,14 @@ $rol = $usuario['rol'] ?? 'pasajero'; // Por si acaso no está definido
                     <p>Actualiza tu información personal</p>
                 </div>
 
+                <a href="vehicles.php" class="card-link">
+                    <div class="card">
+                        <div class="card-icon"><i class="bi bi-car-front"></i></div>
+                        <h3>Mis vehiculos</h3>
+                        <p>¿Quires ver tus vehiculos registrados?</p>
+                    </div>
+                </a>
+
                 <a href="registers_create.php" class="card-link">
                     <div class="card">
                         <div class="card-icon"><i class="bi bi-car-front"></i></div>
@@ -143,19 +137,29 @@ $rol = $usuario['rol'] ?? 'pasajero'; // Por si acaso no está definido
                     </div>
                 </a>
 
+                <a href="rides_request.php" class="card-link">
+                    <div class="card">
+                        <div class="card-icon"><i class="bi bi-car-front"></i></div>
+                        <h3>Aceptar pasajeros</h3>
+                        <p>¿Decidi que pasajeros van o no en tu ride?</p>
+                    </div>
+                </a>
+
+                <a href="my_rides_request.php" class="card-link">
+                    <div class="card">
+                        <div class="card-icon"><i class="bi bi-car-front"></i></div>
+                        <h3>Ver mis rides</h3>
+                        <p>Puedes ver tus rides antiguos o futuros y darte baja</p>
+                    </div>
+                </a>
+
+
             <?php else: ?>
                 <!-- PASAJERO solo puede ver Buscar, Mis viajes y Mi perfil -->
+                 
                 <div class="card">
-                    <a href="search.php" class="card-link">
+                    <a href="search_rides.php" class="card-link">
                         <div class="card-icon"><i class="bi bi-search"></i></div>
-                        <h3>Buscar Aventones</h3>
-                        <p>Encuentra viajes disponibles a tu destino</p>
-                    </a>
-                </div>
-
-                <div class="card">
-                    <a href="inbox.php" class="card-link">
-                        <div class="card-icon"><i class="bi bi-clock-history"></i></div>
                         <h3>Viajes en linea</h3>
                         <p>Revisa los viajes disponibles </p>
                     </a>

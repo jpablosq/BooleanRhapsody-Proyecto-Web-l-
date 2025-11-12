@@ -244,10 +244,16 @@ select.input option {
   transform: scale(1.05);
 }
 
-/* Submit button */
-.submit-btn {
-  width: 100%;
-  background-color: var(--primary-purple);
+/* Grupo de botones */
+.button-group {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.submit-btn,
+.cancel-btn {
+  flex: 1;
   border: none;
   color: white;
   padding: 0.875rem 1.5rem;
@@ -256,7 +262,14 @@ select.input option {
   border-radius: 0.5rem;
   cursor: pointer;
   transition: all 0.3s ease;
-  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.submit-btn {
+  background-color: var(--primary-purple);
 }
 
 .submit-btn:hover {
@@ -265,28 +278,44 @@ select.input option {
   box-shadow: 0 10px 25px rgba(124, 58, 237, 0.3);
 }
 
-.submit-btn:active {
-  transform: translateY(0);
-}
-
 .cancel-btn {
-  width: 100%;
   background-color: var(--cancel-red);
-  border: none;
-  color: white;
-  padding: 0.875rem 1.5rem;
-  font-weight: 500;
-  font-size: 1rem;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  margin-top: 0.5rem;
 }
 
 .cancel-btn:hover {
   background-color: var(--cancel-red-hover);
   transform: translateY(-2px);
   box-shadow: 0 10px 25px rgba(239, 68, 68, 0.3);
+}
+
+.view-rides-section {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.view-rides-btn {
+  width: 100%;
+  border: 2px solid var(--primary-purple);
+  background-color: transparent;
+  color: var(--primary-purple);
+  padding: 0.875rem 1.5rem;
+  font-weight: 500;
+  font-size: 1rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.view-rides-btn:hover {
+  background-color: var(--primary-purple);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(124, 58, 237, 0.3);
 }
 
 /* Animaciones */

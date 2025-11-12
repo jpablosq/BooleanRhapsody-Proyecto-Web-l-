@@ -1,12 +1,12 @@
 <?php
 require_once '../config/start_app.php';
 require_once '../config/functions.php';
-require_once '../config/raids_functions.php';
+require_once '../config/rides_functions.php';
 
 checkAuth();
 
 // Obtener todos los viajes
-$viajes = getAllRaids2();
+$viajes = getAllRides2();
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -55,7 +55,6 @@ $viajes = getAllRaids2();
             </div>
 
             <div class="trip-details">
-              <div class="detail-item"><i class="bi bi-calendar-event detail-icon"></i> <?= htmlspecialchars($viaje['fecha_viaje']) ?></div>
               <div class="detail-item"><i class="bi bi-clock detail-icon"></i> <?= htmlspecialchars($viaje['hora_salida']) ?></div>
               <div class="detail-item"><i class="bi bi-car-front detail-icon"></i> <?= htmlspecialchars($viaje['marca'] ?? 'Vehículo no asignado') ?> <?= htmlspecialchars($viaje['modelo'] ?? '') ?></div>
             </div>
@@ -67,7 +66,7 @@ $viajes = getAllRaids2();
                 </div>
                 <div class="driver-name"><?= htmlspecialchars($viaje['nombre_chofer'] . ' ' . $viaje['apellidos_chofer']) ?></div>
               </div>
-              <button class="btn-reserve">Ver detalles</button>
+              <button class="btn-reserve"><a href="rides_details_view.php?id=<?php echo $viaje['id_viaje']; ?>">Ver detalles</a></button>
             </div>
           </div>
         <?php endforeach; ?>

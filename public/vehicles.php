@@ -46,7 +46,7 @@ $vehicles = getAllUserVehicles($usuario['id_usuario']);
                 <i class="bi bi-car-front-fill"></i>
                 <h1>Gestión de Vehículos</h1>
             </div>
-            <button class="btn-back" onclick="window.location.href='vehicles_create.php'">
+            <button class="btn-back" onclick="window.location.href='index.php'">
                 <i class="bi bi-arrow-left"></i>
                 Volver
             </button>

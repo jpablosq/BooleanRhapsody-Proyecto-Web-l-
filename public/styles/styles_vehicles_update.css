@@ -218,7 +218,7 @@ body {
   letter-spacing: 0.5px;
 }
 
-.form-group input {
+.form-group input, .form-group select {
   background: #1f2937;
   border: 2px solid rgba(139, 92, 246, 0.2);
   border-radius: 8px;

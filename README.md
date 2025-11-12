@@ -71,6 +71,9 @@ CREATE TABLE Registros (
 ```
 A diferencia de vehiculos solo se agrega el  y la descripcion nuevos, optamos en hacerlo con tablas diferentes para que alguien de mayor rango pueda ver todas las solicitudes y los motivos del porque fueron aprobadas o rechazadas sin necesidad de tener que ir a la tabla de vehiculos una vez este aceptado se agregara el registro a la tabla vehiculos
 
+
+## **Creación del CRUD de raids**
+Siguiendo con el mismo estilo creamos el crud para generar los rides, tambien creamos la pantalla donde podremos visualizar todos los raids disponibles en nuestra base de datos, donde podremos filtrar por lugar de salida, llegada, hora de salida, fecha etc...
 ```sql
 CREATE TABLE Viajes (
     id_viaje SERIAL PRIMARY KEY,
@@ -87,5 +90,15 @@ CREATE TABLE Viajes (
     fecha_publicacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 ```
-## **Creación del CRUD de raids y inbox**
-Siguiendo con el mismo estilo creamos el crud para generar los riads, tambien creamos la pantalla donde podremos visualizar todos los raids disponibles en nuestra base de datos, donde podremos filtrar por lugar de salida, llegada, hora de salida, fecha etc...
+## **Tabla intermedia para solicitar rides**
+```sql
+CREATE TABLE SolicitudesViaje (
+    id_solicitud SERIAL PRIMARY KEY,
+    id_viaje INT REFERENCES Viajes(id_viaje) ON DELETE CASCADE,
+    id_pasajero INT REFERENCES Usuarios(id_usuario) ON DELETE CASCADE,
+    metodo VARCHAR(30) NOT NULL,
+    cantidad_espacios INT NOT NULL CHECK (cantidad_espacios > 0),
+    estado VARCHAR(20) DEFAULT 'pendiente',
+    fecha_solicitud TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```

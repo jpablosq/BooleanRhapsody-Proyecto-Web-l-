@@ -19,13 +19,11 @@ $viajes = getAllRides2();
 </head>
 <body>
 
-  <!-- agregar boton de volver a index -->
-
-
-
-
   <!-- Navbar de Filtros -->
   <nav class="navbar">
+    <a href="../index.php" class="btn-back">
+      <i class="bi bi-arrow-left"></i> Regresar
+    </a>
     <h2>Mis Viajes</h2>
     <div class="filters">
       <input type="text" id="filtroSalida" placeholder="Lugar de salida">
@@ -36,6 +34,8 @@ $viajes = getAllRides2();
       <button id="btnLimpiar">Limpiar</button>
     </div>
   </nav>
+
+  
 
   <!-- Contenedor principal -->
   <div class="container">

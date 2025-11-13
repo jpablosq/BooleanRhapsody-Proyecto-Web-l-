@@ -95,6 +95,16 @@ $rol = $usuario['rol'] ?? 'pasajero'; // Por si acaso no está definido
                     </div>
                 </a>
 
+                <a href="/users/users.php" class="card-link">
+                    <div class="card">
+                        <div class="card-icon"><i class="bi bi-person"></i></div>
+                        <h3>Administrador de Usuarios</h3>
+                        <p>Administra aca todos los usuarios  </p>
+                    </div>
+                </a>
+
+                
+
             <?php elseif ($rol === 'Chofer'): ?>
                 <!-- CHOFER puede ver todo excepto "Aprobar solicitudes" -->
 

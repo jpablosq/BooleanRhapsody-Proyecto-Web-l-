@@ -82,3 +82,4 @@ CREATE TABLE SolicitudesViaje (
     fecha_solicitud TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 ```
+Se agrega esta tabla intermedia para poder solicitar viajes y acceder a datos importantes de los pasajeros

@@ -23,19 +23,21 @@ function getAllRides() {
     return $stmt->fetchAll();
 }
 
-function getAllRides2() {
+// Obtener todos los rides disponibles
+function getAllAvailableRides() {
     $pdo = getConnection();
     $stmt = $pdo->query("
         SELECT 
             v. *,
             u.nombre AS nombre_chofer,
             u.apellidos AS apellidos_chofer,
+            u.fotografia,
             ve.marca,
             ve.modelo
         FROM Viajes v
         INNER JOIN Usuarios u ON v.id_chofer = u.id_usuario
         INNER JOIN Vehiculos ve ON v.id_vehiculo = ve.id_vehiculo
-        WHERE v.espacios_disponibles > 0
+        WHERE v.espacios_disponibles > 0 
     ");
     return $stmt->fetchAll();
 }
@@ -64,10 +66,10 @@ function getRidesByUserId($id) {
     return $stmt->fetchAll();
 }
 
-// Obtener vehículos de un usuario
+// Obtener los vehículos de un usuario
 function getAllUserVehicles($id) {
     $pdo = getConnection();
-    $stmt = $pdo->prepare('SELECT v.*, u.nombre, u.apellidos, u.nombre_usuario FROM vehiculos v INNER JOIN Usuarios u ON v.id_usuario = u.id_usuario WHERE v.id_usuario = ?');
+    $stmt = $pdo->prepare('SELECT v.*, u.nombre, u.apellidos, u.nombre_usuario FROM vehiculos v INNER JOIN Usuarios u ON v.id_usuario = u.id_usuario WHERE v.id_usuario = ? AND v.estado = "aceptado"');
     $stmt->execute([$id]);
     return $stmt->fetchAll();
 }
@@ -181,17 +183,17 @@ function validateRides($nombre_viaje, $lugar_salida, $hora_salida, $lugar_llegad
     if (empty(trim($dias_semana))) {
         $errors[] = "Debe seleccionar un día de la semana.";
     } elseif (!preg_match('/^(Lunes|Martes|Miércoles|Jueves|Viernes|Sábado|Domingo)$/u', trim($dias_semana))) {
-        $errors[] = "El día seleccionado no es válido. Debe ser uno de: Lunes, Martes, Miércoles, Jueves, Viernes, Sábado o Domingo.";
+        $errors[] = "El día seleccionado no es válido. Debe ser UNO de: Lunes, Martes, Miércoles, Jueves, Viernes, Sábado o Domingo.";
     }
 
     // Validar tarifa por espacio
     if (!is_numeric($tarifa_espacio) || $tarifa_espacio < 0) {
-        $errors[] = "La tarifa por espacio debe ser un número mayor que 0.";
+        $errors[] = "Tiene que agregar una tarifa";
     }
 
     // Validar cantidad de espacios disponibles
     if (!is_numeric($espacios_disponibles) || $espacios_disponibles < 1) {
-        $errors[] = "La cantidad de espacios disponibles debe ser al menos 1.";
+        $errors[] = "Debe agregar una cantidad";
     }
 
     return $errors;
@@ -220,36 +222,48 @@ function createRideRequest($id_viaje, $id_pasajero, $metodo, $cantidad_espacios,
 }
 
 // Obtener solicitudes de rides de un chofer especifico
-function getDriverRides($id) {
+function getDriverRidesRequest($id) {
     $pdo = getConnection();
     $stmt = $pdo->prepare("SELECT sv. *, u.nombre, u.apellidos, u.cedula, u.fotografia, u.telefono, u.fecha_registro, v.nombre_viaje, v.lugar_salida, v.hora_salida, v.lugar_llegada, v.hora_llegada, v.dias_semana, v.tarifa_espacio, v.espacios_disponibles 
     FROM SolicitudesViaje sv
     INNER JOIN Viajes v ON v.id_viaje = sv.id_viaje 
     INNER JOIN Usuarios u ON u.id_usuario = sv.id_pasajero 
-    WHERE v.id_chofer = ?");
+    WHERE v.id_chofer = ? ORDER BY CASE sv.estado WHEN 'pendiente' THEN 1 WHEN 'aceptado' THEN 2 WHEN 'cancelado' THEN 3 WHEN 'rechazado' THEN 4 ELSE 5 END" );
     $stmt->execute([$id]);
     return $stmt->fetchAll();
 }
 
-// Obtener solicitudes de rides de un chofer especifico
+// Obtener solicitudes de rides del usuario especifico
 function getUserRidesRequest($id) {
     $pdo = getConnection();
     $stmt = $pdo->prepare("SELECT sv. *, u.nombre, u.apellidos, u.cedula, u.fotografia, u.telefono, u.fecha_registro, v.nombre_viaje, v.lugar_salida, v.hora_salida, v.lugar_llegada, v.hora_llegada, v.dias_semana, v.tarifa_espacio, v.espacios_disponibles 
     FROM SolicitudesViaje sv
     INNER JOIN Viajes v ON v.id_viaje = sv.id_viaje 
     INNER JOIN Usuarios u ON u.id_usuario = sv.id_pasajero 
-    WHERE u.id_usuario = ?");
+    WHERE u.id_usuario = ? ORDER BY CASE sv.estado WHEN 'aceptado' THEN 1 WHEN 'pendiente' THEN 2 WHEN 'rechazado' THEN 3 WHEN 'cancelado' THEN 4 ELSE 5 END" );
     $stmt->execute([$id]);
     return $stmt->fetchAll();
 }
 
-// Obtener solicitudes de rides de un chofer especifico
+// Obtener solicitudes de rides con datos del pasajero por id
 function getRideRequestById($id) {
     $pdo = getConnection();
-    $stmt = $pdo->prepare("SELECT sv.*, u.nombre, u.apellidos, u.cedula, u.fotografia, u.telefono, u.fecha_registro, v.nombre_viaje, v.lugar_salida, v.hora_salida, v.lugar_llegada, v.hora_llegada, v.dias_semana, v.tarifa_espacio, v.espacios_disponibles 
+    $stmt = $pdo->prepare("SELECT sv.*, u.nombre, u.apellidos, u.cedula, u.fotografia, u.telefono, u.fecha_registro, v.nombre_viaje, v.lugar_salida, v.hora_salida, v.lugar_llegada, v.hora_llegada, v.dias_semana, v.tarifa_espacio, v.espacios_disponibles, v.fecha_publicacion
     FROM SolicitudesViaje sv
     INNER JOIN Viajes v ON v.id_viaje = sv.id_viaje 
     INNER JOIN Usuarios u ON u.id_usuario = sv.id_pasajero 
+    WHERE sv.id_solicitud = ?");
+    $stmt->execute([$id]);
+    return $stmt->fetch();
+}
+
+// Obtener solicitudes de rides con datos del chofer por id
+function getRideDriverRequestById($id) {
+    $pdo = getConnection();
+    $stmt = $pdo->prepare("SELECT sv.*, v.*, c.nombre, c.apellidos, c.cedula, c.telefono, c.fotografia, c.fecha_registro
+    FROM SolicitudesViaje sv
+    JOIN Viajes v ON sv.id_viaje = v.id_viaje
+    JOIN Usuarios c ON v.id_chofer = c.id_usuario 
     WHERE sv.id_solicitud = ?");
     $stmt->execute([$id]);
     return $stmt->fetch();
@@ -265,29 +279,29 @@ function subtractSpaces($id_viaje, $cantidad) {
 function acceptRide($id, $cantidad) {
     $pdo = getConnection();
     $stmt = $pdo->prepare('UPDATE SolicitudesViaje SET estado = "aceptado" WHERE id_solicitud = ?');
-    // Primero actualizamos el estado
-    $stmt->execute([$id]);
 
     $solicitud = getRideRequestById($id);
-    if ($stmt->rowCount() > 0) {
-        if (!empty($solicitud)) {
-            $viaje = getRidesById($solicitud['id_viaje']);
-            $id_viaje = $viaje['id_viaje'];
-            $espacios_disponibles = $viaje['espacios_disponibles'];
-            if(!empty($viaje) && $espacios_disponibles >= $cantidad){
-                subtractSpaces($id_viaje, $cantidad);
-                return true;
-            }
+    if (!empty($solicitud)) {
+        $viaje = getRidesById($solicitud['id_viaje']);
+        $id_viaje = $viaje['id_viaje'];
+        $espacios_disponibles = $viaje['espacios_disponibles'];
+        if(!empty($viaje) && $espacios_disponibles >= $cantidad){
+            // actualizamos el estado
+            $stmt->execute([$id]);
+
+            // Restar los espacios del viaje
+            subtractSpaces($id_viaje, $cantidad);
+            return true;
         }
     }
     return false;
 }
 
 // Modificar el estado a 'rechazado'
-function rechazarRegister($id, $motivo) {
+function declineRide($id) {
     $pdo = getConnection();
-    $stmt = $pdo->prepare('UPDATE Registros SET estado = "rechazado", descripcion = ? WHERE id_registro = ?');
-    return $stmt->execute([$motivo, $id]);
+    $stmt = $pdo->prepare('UPDATE SolicitudesViaje SET estado = "rechazado" WHERE id_solicitud = ?');
+    return $stmt->execute([$id]);
 }
 
 function addSpaces($id_viaje, $cantidad) {
@@ -310,6 +324,7 @@ function leaveRide($id, $cantidad) {
             $viaje = getRidesById($solicitud['id_viaje']);
             $id_viaje = $viaje['id_viaje'];
             if(!empty($viaje)){
+                // Agregar los espacios de vuelta al viaje
                 addSpaces($id_viaje, $cantidad);
                 return true;
             }

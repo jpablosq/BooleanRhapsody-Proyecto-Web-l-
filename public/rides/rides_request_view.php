@@ -9,7 +9,7 @@ checkAuth();
 $id = intval($_GET['id'] ?? 0);
 
 // Obtener ride existente
-$ride = getRideDriverRequestById($id);
+$ride = getRideRequestById($id);
 
 if (!$ride) {
     $_SESSION['error'] = 'Ride no encontrado';
@@ -36,7 +36,7 @@ if (!$ride) {
                 <h1>Detalles del Usuario y Ride</h1>
             </div>
             <div class="header-actions">
-                <a href="my_rides_request.php" class="btn btn-back">
+                <a href="rides_request.php" class="btn btn-back">
                     <i class="bi bi-arrow-left"></i> Volver a Lista
                 </a>
             </div>
@@ -62,7 +62,7 @@ if (!$ride) {
                         <span class="info-value"><?php echo htmlspecialchars($ride['id_solicitud']); ?></span>
                     </div>
                     <div class="info-item">
-                        <span class="info-label">Chofer:</span>
+                        <span class="info-label">Usuario:</span>
                         <span class="info-value"><?php echo htmlspecialchars($ride['nombre']); ?> <?php echo htmlspecialchars($ride['apellidos']); ?></span>
                     </div>
                     <div class="info-item">
@@ -74,7 +74,23 @@ if (!$ride) {
                         <span class="info-value"><?php echo htmlspecialchars($ride['telefono'])?></span>
                     </div>
                     <div class="info-item">
-                        <span class="info-label">Fecha de registro del chofer:</span>
+                        <span class="info-label">Pago:</span>
+                        <span class="info-value"><?php echo htmlspecialchars($ride['metodo'])?></span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Total a pagar:</span>
+                        <span class="info-value"><?php echo htmlspecialchars($ride['tarifa_espacio'] * $ride['cantidad_espacios'])?></span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Cantidad de campos:</span>
+                        <span class="info-value"><?php echo htmlspecialchars($ride['cantidad_espacios'])?></span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Estado Usuario:</span>
+                        <span class="info-value"><?php echo htmlspecialchars($ride['estado'])?></span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Fecha de registro del usuario:</span>
                         <span class="info-value"><?php echo htmlspecialchars($ride['fecha_registro'])?></span>
                     </div>
                     <div class="info-item">
@@ -98,49 +114,37 @@ if (!$ride) {
                         <span class="info-label">Tarifa:</span>
                         <span class="info-value"><?php echo htmlspecialchars($ride['tarifa_espacio']); ?></span>
                     </div>
-                                        <div class="info-item">
-                        <span class="info-label">Pago:</span>
-                        <span class="info-value"><?php echo htmlspecialchars($ride['metodo'])?></span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-label">Total a pagar:</span>
-                        <span class="info-value"><?php echo htmlspecialchars($ride['tarifa_espacio'] * $ride['cantidad_espacios'])?></span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-label">Cantidad de campos:</span>
-                        <span class="info-value"><?php echo htmlspecialchars($ride['cantidad_espacios'])?></span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-label">Mi Estado:</span>
-                        <span class="info-value"><?php echo htmlspecialchars($ride['estado'])?></span>
-                    </div>
                 </div>
             </div>
         </div>
 
         <div class="action-buttons">
-            <?php if($ride['estado'] === 'aceptado'): ?>
-                <button class="btn btn-delete" onclick="confirmLeave(<?php echo htmlspecialchars($ride['id_solicitud']); ?>, '<?php echo htmlspecialchars($ride['lugar_salida']); ?>', '<?php echo htmlspecialchars($ride['lugar_llegada']); ?>', '<?php echo htmlspecialchars($ride['cantidad_espacios']); ?>')">
-                    <i class="bi bi-x-lg"></i> Darme de baja
+            <?php if($ride['estado'] === 'pendiente'): ?>
+                <button class="btn btn-delete" onclick="confirmDecline(<?php echo htmlspecialchars($ride['id_solicitud']); ?>, '<?php echo htmlspecialchars($ride['nombre']); ?>', '<?php echo htmlspecialchars($ride['apellidos']); ?>')">
+                    <i class="bi bi-x-lg"></i> Rechazar
                 </button>
+                <button class="btn btn-accept" onclick="confirmAccept(<?php echo htmlspecialchars($ride['id_solicitud']); ?>, '<?php echo htmlspecialchars($ride['nombre']); ?>', '<?php echo htmlspecialchars($ride['apellidos']); ?>', '<?php echo htmlspecialchars($ride['cantidad_espacios']); ?>')">
+                    <i class="bi bi-check-lg"></i></i> Aceptar  
+                </button>
+
             <?php endif; ?>
         </div>
     </div>
 
-    <!-- Modal de confirmación de darme baja del viaje -->
+<!-- Modal de confirmación para aceptar -->
     <div class="modal fade" id="acceptModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Confirmar Baja</h5>
+                    <h5 class="modal-title">Confirmar Solicitud</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <p>¿Estás seguro de que deseas darte de baja del ride de <strong id="departurePlace"></strong> a <strong id="arrivalPlace"></strong>?</p>
+                    <p>¿Estás seguro de que deseas aceptar al pasajero <strong id="userName"></strong> <strong id="userLastName"></strong> en tu ride?</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <form id="deleteForm" method="POST" action="rides_leave.php" style="display: inline;">
+                    <form id="deleteForm" method="POST" action="rides_accept.php" style="display: inline;">
                         <input type="hidden" name="id" id="acceptUserId">
                         <input type="hidden" name="cantidad" id="spaces">
                         <button type="submit" class="btn btn-danger">
@@ -154,12 +158,46 @@ if (!$ride) {
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        function confirmLeave(id, departurePlace, arrivalPlace, spaces) {
+        function confirmAccept(id, name, lastname, spaces) {
             document.getElementById('acceptUserId').value = id;
-            document.getElementById('departurePlace').textContent = departurePlace;
-            document.getElementById('arrivalPlace').textContent = arrivalPlace;
+            document.getElementById('userName').textContent = name;
+            document.getElementById('userLastName').textContent = lastname;
             document.getElementById('spaces').value = spaces;
             new bootstrap.Modal(document.getElementById('acceptModal')).show();
+        }
+    </script>
+
+    <!-- Modal de confirmación para rechazar -->
+    <div class="modal fade" id="declineModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Rechazar Solicitud</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>¿Estás seguro de que deseas rechazar al pasajero <strong id="userName"></strong> <strong id="userLastName"></strong> en tu ride?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <form id="deleteForm" method="POST" action="rides_decline.php" style="display: inline;">
+                        <input type="hidden" name="declineUserId" id="declineUserId">
+                        <button type="submit" class="btn btn-danger">
+                            <i class="bi bi-check-lg"></i> Aceptar
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>  
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function confirmDecline(id, name, lastname, spaces) {
+            document.getElementById('declineUserId').value = id;
+            document.getElementById('userName').textContent = name;
+            document.getElementById('userLastName').textContent = lastname;
+            new bootstrap.Modal(document.getElementById('declineModal')).show();
         }
     </script>
 </body>

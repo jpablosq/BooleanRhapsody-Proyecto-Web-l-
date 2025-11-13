@@ -15,12 +15,12 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 $id = intval($_POST['id'] ?? 0);
 
 if ($id <= 0) {
-    $_SESSION['error'] = 'ID del vehiculo inválido';
+    $_SESSION['error'] = 'ID del usuario inválido';
     header('Location: users.php');
     exit();
 }
 
-// Verificar que el producto existe
+// Verificar que el usuario existe
 $users = getUserById($id);
 
 if (!$users) {
@@ -29,7 +29,7 @@ if (!$users) {
     exit();
 }
 
-// Intentar eliminar el producto
+// Intentar eliminar el usuario
 if (deleteUser($id)) {
     $_SESSION['success'] = 'El usuario ' . htmlspecialchars($users['nombre']) . ' ' . htmlspecialchars($users['apellidos']) . ' eliminado exitosamente';
 } else {

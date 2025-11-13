@@ -171,7 +171,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                         <div class="form-group">
                             <label for="tarifa_espacio">Tarifa:</label>
-                            <input type="number" name="tarifa_espacio" class="input with-icon" min="1" required
+                            <input type="number" name="tarifa_espacio" class="input with-icon" min="1" readonly
                                 value="<?php echo htmlspecialchars($ride['tarifa_espacio']); ?>">
                         </div>
                     </div>

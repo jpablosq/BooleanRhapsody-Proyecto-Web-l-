@@ -53,64 +53,65 @@ $rides = getUserRidesRequest($usuario['id_usuario']);
         </div>
 
         <div class="table-container">
-    <table class="vehicles-table">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nombre</th>
-                <th>Apellidos</th>
-                <th>Metodo</th>
-                <th>Reservados</th>
-                <th>Salida</th>
-                <th>Llegada</th>
-                <th>Dia</th>
-                <th>Tarifa</th>
-                <th>Estado</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($rides as $ride): ?>
-            <tr>
-                <td><?php echo $ride['id_solicitud']; ?></td>
-                <td><?php echo $ride['nombre']; ?></td>
-                <td><?php echo $ride['apellidos']; ?></td>
-                <td><?php echo $ride['metodo']; ?></td>
-                <td><?php echo $ride['cantidad_espacios']; ?></td>
-                <td><?php echo $ride['lugar_salida']; ?></td>
-                <td><?php echo $ride['lugar_llegada']; ?></td>
-                <td><?php echo $ride['dias_semana']; ?></td>
-                <td><?php echo $ride['tarifa_espacio']; ?></td>
-                <td><?php echo $ride['estado']; ?></td>
-                <td>
-                <div class="action-buttons">
-                    <a href="my_rides_view.php?id=<?php echo $ride['id_solicitud']; ?>" 
-                        class="btn-action btn-view" title="Ver">
-                        <i class="bi bi-eye-fill"></i>
-                    </a>
+        <table class="vehicles-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Apellidos</th>
+                    <th>Metodo</th>
+                    <th>Reservados</th>
+                    <th>Salida</th>
+                    <th>Llegada</th>
+                    <th>Dia</th>
+                    <th>Tarifa</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($rides as $ride): ?>
+                <tr>
+                    <td><?php echo $ride['id_solicitud']; ?></td>
+                    <td><?php echo $ride['nombre']; ?></td>
+                    <td><?php echo $ride['apellidos']; ?></td>
+                    <td><?php echo $ride['metodo']; ?></td>
+                    <td><?php echo $ride['cantidad_espacios']; ?></td>
+                    <td><?php echo $ride['lugar_salida']; ?></td>
+                    <td><?php echo $ride['lugar_llegada']; ?></td>
+                    <td><?php echo $ride['dias_semana']; ?></td>
+                    <td><?php echo $ride['tarifa_espacio']; ?></td>
+                    <td><?php echo $ride['estado']; ?></td>
+                    <td>
+                    <div class="action-buttons">
+                        <a href="my_rides_view.php?id=<?php echo $ride['id_solicitud']; ?>" 
+                            class="btn-action btn-view" title="Ver">
+                            <i class="bi bi-eye-fill"></i>
+                        </a>
 
-                    <?php if ($ride['estado'] === 'aceptado'): ?>
-                        <button class="btn-action btn-delete" title="Aceptar" onclick="confirmAccept(<?php echo htmlspecialchars($ride['id_solicitud']); ?>, '<?php echo htmlspecialchars($ride['lugar_salida']); ?>', '<?php echo htmlspecialchars($ride['lugar_llegada']); ?>', '<?php echo htmlspecialchars($ride['cantidad_espacios']); ?>')">
-                            <i class="bi bi-x-lg"></i>
-                        </button>
-                    <?php else: ?>
-                    <?php endif; ?>
-                </div>
+                        <?php if ($ride['estado'] === 'aceptado'): ?>
+                            <button class="btn-action btn-delete" title="Dejar Viaje" onclick="confirmLeave(<?php echo htmlspecialchars($ride['id_solicitud']); ?>, '<?php echo htmlspecialchars($ride['lugar_salida']); ?>', '<?php echo htmlspecialchars($ride['lugar_llegada']); ?>', '<?php echo htmlspecialchars($ride['cantidad_espacios']); ?>')">
+                                <i class="bi bi-x-lg"></i>
+                            </button>
+                        <?php else: ?>
+                        <?php endif; ?>
+                    </div>
 
-                </td>
-            </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
-</div>
-
-
-    <div class="empty-state" style="display: none;">
-        <i class="bi bi-car-front"></i>
-        <h3>No hay pasajeros registrados en tus rides</h3>
+                    </td>
+                </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
     </div>
 
-    <!-- Modal de confirmación para aceptar -->
+    <?php if (empty($rides)): ?>
+        <div class="empty-state" style="display: none;">
+            <i class="bi bi-car-front"></i>
+            <h3>No hay pasajeros registrados en tus rides</h3>
+        </div>
+    <?php endif; ?>   
+     
+    <!-- Modal de confirmación de darme baja del viaje -->
     <div class="modal fade" id="acceptModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -137,7 +138,7 @@ $rides = getUserRidesRequest($usuario['id_usuario']);
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        function confirmAccept(id, departurePlace, arrivalPlace, spaces) {
+        function confirmLeave(id, departurePlace, arrivalPlace, spaces) {
             document.getElementById('acceptUserId').value = id;
             document.getElementById('departurePlace').textContent = departurePlace;
             document.getElementById('arrivalPlace').textContent = arrivalPlace;

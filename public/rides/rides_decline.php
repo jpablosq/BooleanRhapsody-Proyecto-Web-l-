@@ -13,9 +13,8 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit();
 }
 
-// Obtener id y espacios
-$id = intval($_POST['id'] ?? 0);
-$espacios = intval($_POST['cantidad'] ?? 0);
+// Obtener id
+$id = intval($_POST['declineUserId'] ?? 0);
 
 // Verificar que la solicitud existe
 $rideRequest = getRideRequestById($id);
@@ -27,10 +26,10 @@ if (!$rideRequest) {
 }
 
 
-if (acceptRide($id, $espacios)) {
-    $_SESSION['success'] = 'El pasajero a sido aceptado ';
+if (declineRide($id)) {
+    $_SESSION['success'] = 'El pasajero a sido rechazado ';
 } else {
-    $_SESSION['error'] = 'Error al aceptar el pasajero: Excede cantidad de espacios disponibles';
+    $_SESSION['error'] = 'Error al rechazar el pasajero';
 }
 
 header('Location: rides_request.php');

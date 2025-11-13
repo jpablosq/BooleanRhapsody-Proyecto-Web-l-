@@ -8,7 +8,7 @@ checkAuth();
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     $_SESSION['error'] = 'Método no permitido';
-    header('Location: vehicles.php');
+    header('Location: my_vehicles.php');
     exit();
 }
 
@@ -16,7 +16,7 @@ $id = intval($_POST['id'] ?? 0);
 
 if ($id <= 0) {
     $_SESSION['error'] = 'ID del vehiculo inválido';
-    header('Location: vehicles.php');
+    header('Location: my_vehicles.php');
     exit();
 }
 
@@ -25,7 +25,7 @@ $vehicle = getVehiclesById($id);
 
 if (!$vehicle) {
     $_SESSION['error'] = 'vehiculo no encontrado';
-    header('Location: vehicles.php');
+    header('Location: my_vehicles.php');
     exit();
 }
 
@@ -36,6 +36,6 @@ if (deleteVehicles($id)) {
     $_SESSION['error'] = 'Error al eliminar el vehiculo';
 }
 
-header('Location: vehicles.php');
+header('Location: my_vehicles.php');
 exit();
 ?>

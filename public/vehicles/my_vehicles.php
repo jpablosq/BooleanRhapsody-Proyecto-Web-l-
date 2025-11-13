@@ -8,7 +8,7 @@ checkAuth();
 $usuario = $_SESSION["usuario"];
 
 // Obtener todos los vehiculos
-$vehicles = getAllUserVehicles($usuario['id_usuario']);
+$vehicles = getAllUserAcceptVehicles($usuario['id_usuario']);
 ?>
 
 <!DOCTYPE html>

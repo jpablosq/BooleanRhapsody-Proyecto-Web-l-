@@ -36,7 +36,7 @@ if (!$vehicle) {
                 <h1>Detalles del Vehículo</h1>
             </div>
             <div class="header-actions">
-                <a href="vehicles.php" class="btn btn-back">
+                <a href="my_vehicles.php" class="btn btn-back">
                     <i class="bi bi-arrow-left"></i> Volver a Lista
                 </a>
             </div>

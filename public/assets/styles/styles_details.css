@@ -7,11 +7,11 @@
   --danger-red-hover: #dc2626;
   --warning-yellow: #f59e0b;
   --dark-bg: #1e1b2e;
-  --darker-bg: #232030;
+  --darker-bg: #16141f;
   --card-bg: rgba(255, 255, 255, 0.05);
   --text-primary: #ffffff;
   --text-secondary: #a8a8b3;
-  --border-color: rgba(255, 255, 255, 0.1);
+  --border-color: #3a3750;
 }
 
 * {

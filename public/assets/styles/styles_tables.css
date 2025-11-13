@@ -93,6 +93,25 @@ body {
   font-size: 1.25rem;
 }
 
+.btn-back-create {
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
+  font-size: 1.25rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 8px;
+  transition: background-color 0.3s;
+}
+
+.btn-back-create:hover {
+  background-color: var(--card-bg);
+}
+
+.btn-create i {
+  font-size: 1.25rem;
+}
+
 .table-container {
   background: var(--surface);
   border-radius: 12px;
@@ -238,9 +257,9 @@ body {
 }
 
 .empty-state i {
-  font-size: 4rem;
+  font-size: 3rem;
   color: var(--primary-light);
-  margin-bottom: 1rem;
+  margin-bottom: 0.1rem;
 }
 
 .empty-state h3 {
@@ -258,7 +277,7 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.875rem 1.75rem;
+  padding: 0.01rem 0.5rem;
   background: var(--primary-color);
   color: white;
   border: none;

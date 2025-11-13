@@ -8,7 +8,7 @@ checkAuth();
 
 $id = intval($_GET['id'] ?? 0);
 
-// Obtener producto
+// Obtener ride existen
 $ride = getRidesById($id);
 
 if (!$ride) {
@@ -29,7 +29,6 @@ if (!$ride) {
     <link rel="stylesheet" href="../assets/styles/styles_view.css">
 </head>
 <body>
-    <!-- Changed container to main-container to avoid Bootstrap conflicts -->
     <div class="main-container">
         <div class="header">
             <div class="header-title">
@@ -46,7 +45,7 @@ if (!$ride) {
         <div class="content">
             <div class="vehicle-card">
                 <div class="vehicle-image">
-                    <img src="imagenes/mapa.png" alt="Imagen del mapa" id="mapaImagen">
+                    <img src="../assets/imagenes/mapa.png" alt="Imagen del mapa" id="mapaImagen">
                 </div>
                 <h2 class="vehicle-name"><?php echo htmlspecialchars($ride['lugar_salida'])?> <div class="arrow">→</div> <?php echo htmlspecialchars($ride['lugar_llegada'])?></h2>
                 <div class="vehicle-plate"><?php echo htmlspecialchars($ride['dias_semana']); ?></div>
@@ -113,7 +112,7 @@ if (!$ride) {
                 <i class="bi bi-trash"></i> Eliminar Ride
             </button>
             <a href="rides_update.php?id=<?php echo $ride['id_viaje']; ?>" class="btn btn-edit-main">
-                <i class="bi bi-pencil-square"></i> Editar Vehículo
+                <i class="bi bi-pencil-square"></i> Editar Ride
             </a>
         </div>
     </div>

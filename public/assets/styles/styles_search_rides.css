@@ -1,15 +1,16 @@
+/* Variables de color */
 :root {
   --primary-purple: #7c3aed;
   --primary-purple-hover: #6d28d9;
   --dark-bg: #1e1b2e;
-  --darker-bg: #232030;
+  --darker-bg: #16141f;
   --input-bg: #2a2738;
   --text-primary: #ffffff;
   --text-secondary: #a8a8b3;
   --border-color: #3a3750;
 }
 
-/* === General === */
+/* General */
 * {
   margin: 0;
   padding: 0;
@@ -17,95 +18,149 @@
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-  background: linear-gradient(135deg, #1a1d3a 0%, #2d1b4e 100%);
-  min-height: 100vh;
-  color: #ffffff;
-  padding: 2rem;
-}
-
-.container {
-  max-width: 1400px;
-  margin: 0 auto;
-}
-
-.header {
-  margin-bottom: 3rem;
-  text-align: center;
-}
-
-.title {
-  font-size: 3rem;
-  font-weight: 700;
-  margin-bottom: 0.5rem;
-  background: linear-gradient(135deg, #ffffff 0%, #a8b3ff 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.subtitle {
-  font-size: 1.125rem;
-  color: #b8b9d4;
-  font-weight: 300;
-}
-
-/* === Navbar === */
-.navbar {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   background-color: var(--darker-bg);
-  padding: 15px 20px;
+  color: var(--text-primary);
+  overflow-x: hidden;
+}
+
+/* Navbar */
+.navbar {
+  background-color: var(--dark-bg);
+  padding: 1rem 2rem;
   display: flex;
-  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid var(--border-color);
-  border-radius: 12px;
-  margin-bottom: 2rem;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-.navbar h2 {
+.navbar-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.btn-back {
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
+  font-size: 1.25rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 8px;
+  transition: background-color 0.3s;
+}
+
+.btn-back:hover {
+  background-color: var(--card-bg);
+}
+
+.navbar-brand {
+  font-size: 1.5rem;
+  font-weight: 700;
   color: var(--text-primary);
   margin: 0;
-  font-size: 1.4rem;
+}
+
+/* Filtros como isla flotante */
+.filters-section {
+  padding: 2rem;
 }
 
 .filters {
+  max-width: 1400px;
+  margin: 0 auto;
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
-  align-items: center;
+  gap: 1rem;
+  align-items: flex-end;
+  background-color: var(--dark-bg);
+  padding: 1.5rem;
+  border-radius: 16px;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
-.filters input {
-  padding: 8px 10px;
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1;
+  min-width: 200px;
+}
+
+.filter-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.filter-group input {
+  padding: 0.875rem 1rem;
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
   background-color: var(--input-bg);
   color: var(--text-primary);
-  transition: border-color 0.2s ease-in-out;
+  transition: all 0.3s;
+  font-size: 0.95rem;
 }
 
-.filters input:focus {
+.filter-group input:focus {
   outline: none;
   border-color: var(--primary-purple);
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
 }
 
-.filters button {
-  background-color: var(--primary-purple);
-  color: white;
+.filter-group input::placeholder {
+  color: #6b7280;
+}
+
+/* Botones de filtros */
+.filter-actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.btn-filter,
+.btn-clear {
   border: none;
-  padding: 8px 15px;
-  border-radius: 8px;
+  padding: 0.875rem 2rem;
+  border-radius: 12px;
   cursor: pointer;
-  transition: background 0.3s;
+  transition: all 0.3s;
+  font-weight: 600;
+  font-size: 0.95rem;
 }
 
-.filters button:hover {
-  background-color: var(--primary-purple-hover);
+.btn-filter {
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  color: white;
 }
 
-/* === Tarjetas de Viajes === */
+.btn-filter:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(99, 102, 241, 0.4);
+}
+
+.btn-clear {
+  background-color: transparent;
+  border: 2px solid var(--border-color);
+  color: var(--text-primary);
+}
+
+.btn-clear:hover {
+  background-color: var(--card-bg);
+  transform: translateY(-2px);
+}
+
+/* Container principal */
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+/* Grid de viajes */
 .trips-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
@@ -113,19 +168,17 @@ body {
 }
 
 .trip-card {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: var(--dark-bg);
+  border: 1px solid var(--border-color);
   border-radius: 16px;
   padding: 1.5rem;
-  transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
+  transition: all 0.3s;
 }
 
 .trip-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
-  border-color: rgba(138, 110, 255, 0.5);
-  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
+  border-color: var(--primary-purple);
 }
 
 .trip-header {
@@ -134,7 +187,7 @@ body {
   align-items: flex-start;
   margin-bottom: 1.5rem;
   padding-bottom: 1rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid var(--border-color);
 }
 
 .route {
@@ -155,14 +208,12 @@ body {
 .icon {
   width: 18px;
   height: 18px;
-  stroke-width: 2;
   color: #8a6eff;
 }
 
 .arrow {
-  color: #b8b9d4;
+  color: var(--text-secondary);
   font-size: 1.25rem;
-  font-weight: 300;
 }
 
 .price {
@@ -183,15 +234,14 @@ body {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  color: #e0e0e8;
+  color: var(--text-primary);
   font-size: 0.9rem;
 }
 
 .detail-icon {
   width: 16px;
   height: 16px;
-  stroke-width: 2;
-  color: #b8b9d4;
+  color: var(--text-secondary);
 }
 
 .trip-footer {
@@ -199,7 +249,7 @@ body {
   justify-content: space-between;
   align-items: center;
   padding-top: 1rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid var(--border-color);
 }
 
 .driver-info {
@@ -234,7 +284,7 @@ body {
   font-weight: 600;
   font-size: 0.9rem;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s;
 }
 
 .btn-reserve:hover {
@@ -242,19 +292,64 @@ body {
   box-shadow: 0 8px 16px rgba(99, 102, 241, 0.4);
 }
 
-/* === Responsive === */
+.no-trips {
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+  padding: 3rem;
+}
+
+/* Responsive */
 @media (max-width: 768px) {
-  body {
+  .navbar {
     padding: 1rem;
   }
+
+  .navbar-right {
+    gap: 0.5rem;
+  }
+
+  .username {
+    display: none;
+  }
+
+  .btn-logout {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.85rem;
+  }
+
+  .filters-section {
+    padding: 1.5rem 1rem;
+  }
+
+  .filters {
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .filter-group {
+    width: 100%;
+    min-width: unset;
+  }
+
+  .filter-actions {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .btn-filter,
+  .btn-clear {
+    width: 100%;
+  }
+
+  .container {
+    padding: 1rem;
+  }
+
   .title {
     font-size: 2rem;
   }
-  .navbar {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem;
-  }
+
   .trips-grid {
     grid-template-columns: 1fr;
   }

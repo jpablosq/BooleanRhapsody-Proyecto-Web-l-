@@ -31,6 +31,13 @@ function getAllUserVehicles($id) {
     return $stmt->fetchAll();
 }
 
+function getAllUserAcceptVehicles($id) {
+    $pdo = getConnection();
+    $stmt = $pdo->prepare('SELECT v.*, u.nombre, u.apellidos, u.nombre_usuario FROM vehiculos v INNER JOIN Usuarios u ON v.id_usuario = u.id_usuario WHERE v.id_usuario = ? AND v.estado = "aceptado"');
+    $stmt->execute([$id]);
+    return $stmt->fetchAll();
+}
+
 // Obtener vehiculos por ID
 function getVehiclesById($id) {
     $pdo = getConnection();

@@ -22,32 +22,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $anio = trim($_POST['anio'] ?? '');
     $color = trim($_POST['color'] ?? '');
     $placa = trim($_POST['placa'] ?? '');
-    $foto = trim($_POST['foto'] ?? '');
+    $foto = trim($_POST['photo'] ?? '');
 
    // Validar datos
     $errors = validateVehicles($marca, $modelo, $anio, $color, $placa, $foto);
 
     // config foto 
-        if (isset($_FILES['photo']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
-        $uploadDir = __DIR__ . '/../public/uploads/';
+    if (isset($_FILES['photo']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
+        $uploadDir = __DIR__ . '/../uploads/';
         if (!file_exists($uploadDir)) mkdir($uploadDir, 0777, true);
-
-        // Corregido:
         $fileName = time() . '_' . basename($_FILES['photo']['name']);
         $targetPath = $uploadDir . $fileName;
 
         if (move_uploaded_file($_FILES['photo']['tmp_name'], $targetPath)) {
-            $foto = $fileName;
+            // Guarda solo el nombre del archivo en la BD
+            $fotografia = $fileName;
         } else {
-            $foto = null;
+            $fotografia = null;
         }
     } else {
-        $foto = null;
+        $fotografia = null;
     }
 
     // Si no hay errores, crear el vehiculo
     if (empty($errors)) {
-        if (createVehicle($usuario['id_usuario'], $marca, $modelo, $anio, $color, $placa, $foto)) {
+        if (createVehicle($usuario['id_usuario'], $marca, $modelo, $anio, $color, $placa, $fotografia)) {
             $_SESSION['success'] = 'Solicitud agregada exitosamente.';
             header('Location: vehicles_create.php');
             exit();

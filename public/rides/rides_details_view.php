@@ -17,7 +17,7 @@ if (!$ride) {
     exit();
 }
 
-// Procesar solicitud de viaje (POST)
+// Procesar solicitud de viaje
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id_viaje = intval($_POST['id_viaje'] ?? 0);
     $id_pasajero = $_SESSION['usuario']['id_usuario'];
@@ -56,6 +56,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <!-- Header con ruta principal -->
     <div class="details-header">
+
+      <!-- Mensajes de error o exito -->
+      <?php if(isset($_SESSION["success"])): ?>
+          <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
+              <?php echo $_SESSION["success"]; ?>
+          </div>
+          <?php unset($_SESSION["success"]); ?>
+      <?php endif;?>
+      </span>
+
+      <span>
+          <?php if(isset($_SESSION["error"])): ?>
+              <div class= "alert alert-danger alert-diamissible fade show mt-3" role="alert">
+                  <?php echo $_SESSION["error"]; ?>
+              </div>
+              <?php unset($_SESSION["error"]); ?>
+          <?php endif;?>
+      </span>
+
       <h1 class="title">Detalles del Viaje</h1>
       <div class="main-route">
         <div class="location-large">
@@ -72,8 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       </div>
       <div class="main-price">₡<?php echo htmlspecialchars($ride['tarifa_espacio']) ?></div>
     </div>
-
-    <!-- Grid de información -->
+    
     <div class="details-grid">
       <!-- Información del viaje -->
       <div class="info-card">
@@ -81,6 +99,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           <i class="bi bi-calendar-event"></i>
           Información del Viaje
         </h2>
+        <br>
         <div class="info-list">
           <div class="info-item">
             <span class="info-label">Días</span>
@@ -111,6 +130,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           <i class="bi bi-car-front-fill"></i>
           Información del Vehículo
         </h2>
+        <br>
         <div class="vehicle-photo">
           <img src="../uploads/<?php echo htmlspecialchars($ride['fotografia']) ?>" 
                alt="<?php echo htmlspecialchars($ride['marca'] . ' ' . $ride['modelo']) ?>">
@@ -141,9 +161,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           <i class="bi bi-person-circle"></i>
           Información del Conductor
         </h2>
+        <br>
         <div class="driver-profile">
           <div class="driver-avatar-large">
-            <img src="<?php echo htmlspecialchars($ride['fotoUsuario']) ?>" 
+            <img src="../uploads/<?php echo htmlspecialchars($ride['fotoUsuario']) ?>" 
                  alt="<?php echo htmlspecialchars($ride['nombre'] . ' ' . $ride['apellidos']) ?>">
           </div>
           <div class="driver-details">

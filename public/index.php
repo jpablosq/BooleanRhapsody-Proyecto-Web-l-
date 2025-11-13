@@ -56,7 +56,6 @@ $rol = $usuario['rol'] ?? 'pasajero'; // Por si acaso no está definido
         <div class="content-grid">
             <?php if ($rol === 'Administrador'): ?>
                 <!-- ADMIN puede ver todo -->
-
                 <div class="card">
                     <a href="/rides/rides_create.php" class="card-link">
                         <div class="card-icon"><i class="bi bi-plus-circle"></i></div>
@@ -73,17 +72,35 @@ $rol = $usuario['rol'] ?? 'pasajero'; // Por si acaso no está definido
                     </a>
                 </div>
 
-                <div class="card">
-                    <div class="card-icon"><i class="bi bi-person"></i></div>
-                    <h3>Mi Perfil</h3>
-                    <p>Actualiza tu información personal</p>
-                </div>
+                <a href="/vehicles/my_vehicles.php" class="card-link">
+                    <div class="card">
+                        <div class="card-icon"><i class="bi bi-car-front"></i></div>
+                        <h3>Mis vehiculos</h3>
+                        <p>¿Quires ver tus vehiculos registrados?</p>
+                    </div>
+                </a>
 
                 <a href="/vehicles/vehicles_create.php" class="card-link">
                     <div class="card">
                         <div class="card-icon"><i class="bi bi-car-front"></i></div>
-                        <h3>Aplica para chofer</h3>
-                        <p>¿Quieres convertirte en Conductor en nuestra app?</p>
+                        <h3>Registra otro vehiculo</h3>
+                        <p>¿Quieres registrar otro vehiculo en nuestra app?</p>
+                    </div>
+                </a>
+
+                <a href="/rides/rides_request.php" class="card-link">
+                    <div class="card">
+                        <div class="card-icon"><i class="bi bi-car-front"></i></div>
+                        <h3>Aceptar pasajeros</h3>
+                        <p>¿Decidi que pasajeros van o no en tu ride?</p>
+                    </div>
+                </a>
+
+                <a href="/rides/my_rides_request.php" class="card-link">
+                    <div class="card">
+                        <div class="card-icon"><i class="bi bi-car-front"></i></div>
+                        <h3>Ver mis rides</h3>
+                        <p>Puedes ver tus rides antiguos o futuros y darte baja</p>
                     </div>
                 </a>
 
@@ -99,11 +116,9 @@ $rol = $usuario['rol'] ?? 'pasajero'; // Por si acaso no está definido
                     <div class="card">
                         <div class="card-icon"><i class="bi bi-person"></i></div>
                         <h3>Administrador de Usuarios</h3>
-                        <p>Administra aca todos los usuarios  </p>
+                        <p>Administra y ve todos los usuarios de la app</p>
                     </div>
                 </a>
-
-                
 
             <?php elseif ($rol === 'Chofer'): ?>
                 <!-- CHOFER puede ver todo excepto "Aprobar solicitudes" -->
@@ -125,13 +140,7 @@ $rol = $usuario['rol'] ?? 'pasajero'; // Por si acaso no está definido
                     </a>
                 </div>
 
-                <div class="card">
-                    <div class="card-icon"><i class="bi bi-person"></i></div>
-                    <h3>Mi Perfil</h3>
-                    <p>Actualiza tu información personal</p>
-                </div>
-
-                <a href="/vehicles/vehicles.php" class="card-link">
+                <a href="/vehicles/my_vehicles.php" class="card-link">
                     <div class="card">
                         <div class="card-icon"><i class="bi bi-car-front"></i></div>
                         <h3>Mis vehiculos</h3>
@@ -173,12 +182,6 @@ $rol = $usuario['rol'] ?? 'pasajero'; // Por si acaso no está definido
                         <h3>Viajes en linea</h3>
                         <p>Revisa los viajes disponibles </p>
                     </a>
-                </div>
-
-                <div class="card">
-                    <div class="card-icon"><i class="bi bi-person"></i></div>
-                    <h3>Mi Perfil</h3>
-                    <p>Actualiza tu información personal</p>
                 </div>
 
                 <a href="/vehicles/vehicles_create.php" class="card-link">

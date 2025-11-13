@@ -5,8 +5,8 @@ require_once '../../config/rides_functions.php';
 
 checkAuth();
 
-// Obtener todos los viajes
-$viajes = getAllRides2();
+// Obtener todos los viajes disponibles
+$viajes = getAllAvailableRides();
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -19,31 +19,20 @@ $viajes = getAllRides2();
 </head>
 <body>
 
-  <!-- Navbar de Filtros -->
+  <!-- Nueva barra de navegación superior con Aventones, usuario y botón de cerrar sesión -->
   <nav class="navbar">
-    <a href="../index.php" class="btn-back">
-      <i class="bi bi-arrow-left"></i> Regresar
-    </a>
-    <h2>Mis Viajes</h2>
-    <div class="filters">
-      <input type="text" id="filtroSalida" placeholder="Lugar de salida">
-      <input type="text" id="filtroLlegada" placeholder="Lugar de llegada">
-      <input type="date" id="filtroFecha">
-      <input type="time" id="filtroHora" placeholder="Hora de salida">
-      <button id="btnFiltrar">Filtrar</button>
-      <button id="btnLimpiar">Limpiar</button>
+    <div class="navbar-left">
+      <a href="../index.php">
+        <button class="btn-back">
+          <i class="bi bi-arrow-left"></i>
+        </button>
+      </a>
+      <h1 class="navbar-brand">Aventones</h1>
     </div>
   </nav>
 
-  
-
   <!-- Contenedor principal -->
   <div class="container">
-    <header class="header">
-      <h1 class="title">Listado de Viajes</h1>
-      <p class="subtitle">Consulta y filtra tus viajes fácilmente</p>
-    </header>
-
     <!-- Tarjetas de viajes -->
     <div class="trips-grid" id="viajesContainer">
       <?php if (empty($viajes)): ?>
@@ -72,7 +61,7 @@ $viajes = getAllRides2();
                 </div>
                 <div class="driver-name"><?= htmlspecialchars($viaje['nombre_chofer'] . ' ' . $viaje['apellidos_chofer']) ?></div>
               </div>
-              <button class="btn-reserve"><a href="rides_details_view.php?id=<?php echo $viaje['id_viaje']; ?>">Ver detalles</a></button>
+              <a href="rides_details_view.php?id=<?php echo $viaje['id_viaje']; ?>"><button class="btn-reserve">Ver detalles</button></a>
             </div>
           </div>
         <?php endforeach; ?>

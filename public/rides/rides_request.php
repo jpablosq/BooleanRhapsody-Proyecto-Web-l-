@@ -8,7 +8,7 @@ checkAuth();
 $usuario = $_SESSION["usuario"];
 
 // Obtener todas las solicitudes de rides del chofer
-$rides = getDriverRides($usuario['id_usuario']);
+$rides = getDriverRidesRequest($usuario['id_usuario']);
 ?>
 
 <!DOCTYPE html>
@@ -22,7 +22,7 @@ $rides = getDriverRides($usuario['id_usuario']);
     <link rel="stylesheet" href="../assets/styles/styles_tables.css">
 </head>
 <body>
-    <div class="container">
+    <div class="main-container">
         <span>
         <?php if(isset($_SESSION["success"])): ?>
             <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
@@ -53,71 +53,65 @@ $rides = getDriverRides($usuario['id_usuario']);
         </div>
 
         <div class="table-container">
-    <table class="vehicles-table">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nombre</th>
-                <th>Apellidos</th>
-                <th>Cedula</th>
-                <th>Viaje</th>
-                <th>Salida</th>
-                <th>Llegada</th>
-                <th>Dias</th>
-                <th>Solicita</th>
-                <th>Estado</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($rides as $ride): ?>
-            <tr>
-                <td><?php echo $ride['id_solicitud']; ?></td>
-                <td><?php echo $ride['nombre']; ?></td>
-                <td><?php echo $ride['apellidos']; ?></td>
-                <td><?php echo $ride['cedula']; ?></td>
-                <td><?php echo $ride['nombre_viaje']; ?></td>
-                <td><?php echo $ride['lugar_salida']; ?></td>
-                <td><?php echo $ride['lugar_llegada']; ?></td>
-                <td><?php echo $ride['dias_semana']; ?></td>
-                <td><?php echo $ride['cantidad_espacios']; ?></td>
-                <td><?php echo $ride['estado']; ?></td>
-                <td>
-                <div class="action-buttons">
-                    <a href="registers_view.php?id=<?php echo $register['id_registro']; ?>" 
-                        class="btn-action btn-view" title="Ver">
-                        <i class="bi bi-eye-fill"></i>
-                    </a>
+        <table class="vehicles-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Apellidos</th>
+                    <th>Viaje</th>
+                    <th>Salida</th>
+                    <th>Llegada</th>
+                    <th>Dias</th>
+                    <th>Solicita</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($rides as $ride): ?>
+                <tr>
+                    <td><?php echo $ride['id_solicitud']; ?></td>
+                    <td><?php echo $ride['nombre']; ?></td>
+                    <td><?php echo $ride['apellidos']; ?></td>
+                    <td><?php echo $ride['nombre_viaje']; ?></td>
+                    <td><?php echo $ride['lugar_salida']; ?></td>
+                    <td><?php echo $ride['lugar_llegada']; ?></td>
+                    <td><?php echo $ride['dias_semana']; ?></td>
+                    <td><?php echo $ride['cantidad_espacios']; ?></td>
+                    <td><?php echo $ride['estado']; ?></td>
+                    <td>
+                    <div class="action-buttons">
+                        <a href="rides_request_view.php?id=<?php echo $ride['id_solicitud']; ?>" 
+                            class="btn-action btn-view" title="Ver">
+                            <i class="bi bi-eye-fill"></i>
+                        </a>
 
-                    <?php if ($ride['estado'] === 'pendiente'): ?>
-                        <button class="btn-action btn-accept" title="Aceptar" onclick="confirmAccept(<?php echo htmlspecialchars($ride['id_solicitud']); ?>, '<?php echo htmlspecialchars($ride['nombre']); ?>', '<?php echo htmlspecialchars($ride['apellidos']); ?>', '<?php echo htmlspecialchars($ride['cantidad_espacios']); ?>')">
-                            <i class="bi bi-check-lg"></i>
-                        </button>
+                        <?php if ($ride['estado'] === 'pendiente'): ?>
+                            <button class="btn-action btn-accept" title="Aceptar" onclick="confirmAccept(<?php echo htmlspecialchars($ride['id_solicitud']); ?>, '<?php echo htmlspecialchars($ride['nombre']); ?>', '<?php echo htmlspecialchars($ride['apellidos']); ?>', '<?php echo htmlspecialchars($ride['cantidad_espacios']); ?>')">
+                                <i class="bi bi-check-lg"></i>
+                            </button>
 
-                        <button class="btn-action btn-delete" title="Rechazar" 
-                            onclick="confirmDecline(
-                                <?php echo htmlspecialchars($ride['id_solicitud']); ?>, 
-                                '<?php echo htmlspecialchars($ride['nombre']); ?>', 
-                                '<?php echo htmlspecialchars($ride['apellidos']); ?>'
-                            )">
-                            <i class="bi bi-x-lg"></i>
-                        </button>
-                    <?php else: ?>
-                    <?php endif; ?>
-                </div>
+                            <button class="btn-action btn-delete" title="Rechazar" onclick="confirmDecline(<?php echo htmlspecialchars($ride['id_solicitud']); ?>, '<?php echo htmlspecialchars($ride['nombre']); ?>', '<?php echo htmlspecialchars($ride['apellidos']); ?>')">
+                                <i class="bi bi-x-lg"></i>
+                            </button>
+                        <?php else: ?>
+                        <?php endif; ?>
+                    </div>
 
-                </td>
-            </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
-</div>
-
-
-    <div class="empty-state" style="display: none;">
-        <i class="bi bi-car-front"></i>
-        <h3>No hay pasajeros registrados en tus rides</h3>
+                    </td>
+                </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
     </div>
+
+    <?php if(empty($rides)): ?>
+        <div class="empty-state">
+            <i class="bi bi-car-front"></i>
+            <h3>No hay pasajeros registrados en tus rides</h3>
+        </div>
+    <?php endif; ?>
 
     <!-- Modal de confirmación para aceptar -->
     <div class="modal fade" id="acceptModal" tabindex="-1">
@@ -164,18 +158,14 @@ $rides = getDriverRides($usuario['id_usuario']);
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <p>¿Estás seguro de que deseas rechazar el vehículo <strong id="declineVehicleBrand"></strong> <strong id="declineVehicleModel"></strong>?</p>
-
-                    <label for="motivo" class="form-label mt-2">Motivo del rechazo:</label>
-                    <textarea class="form-control" name="motivo" id="motivo" rows="3" required placeholder="Escribe el motivo..."></textarea>
+                    <p>¿Estás seguro de que deseas rechazar al pasajero <strong id="userName"></strong> <strong id="userLastName"></strong> en tu ride?</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <form id="declineForm" method="POST" action="registers_decline.php" style="display: inline;">
-                        <input type="hidden" name="id" id="declineVehicleId">
-                        <input type="hidden" name="motivo_hidden" id="motivo_hidden">
+                    <form id="deleteForm" method="POST" action="rides_decline.php" style="display: inline;">
+                        <input type="hidden" name="declineUserId" id="declineUserId">
                         <button type="submit" class="btn btn-danger">
-                            <i class="bi bi-x-lg"></i> Rechazar
+                            <i class="bi bi-check-lg"></i> Aceptar
                         </button>
                     </form>
                 </div>
@@ -185,17 +175,12 @@ $rides = getDriverRides($usuario['id_usuario']);
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        function confirmDecline(id, brand, model) {
-            document.getElementById('declineVehicleId').value = id;
-            document.getElementById('declineVehicleBrand').textContent = brand;
-            document.getElementById('declineVehicleModel').textContent = model;
+        function confirmDecline(id, name, lastname, spaces) {
+            document.getElementById('declineUserId').value = id;
+            document.getElementById('userName').textContent = name;
+            document.getElementById('userLastName').textContent = lastname;
             new bootstrap.Modal(document.getElementById('declineModal')).show();
         }
-
-        // Antes de enviar, pasamos el textarea al input hidden
-        document.getElementById("declineForm").addEventListener("submit", function () {
-            document.getElementById("motivo_hidden").value = document.getElementById("motivo").value;
-        });
     </script>
 </body>
 </html>

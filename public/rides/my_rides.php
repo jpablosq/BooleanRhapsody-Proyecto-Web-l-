@@ -52,70 +52,69 @@ $rides = getRidesByUserId($usuario['id_usuario']);
         </div>
 
         <div class="table-container">
-    <table class="vehicles-table">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Chofer</th>
-                <th>Vehiculo</th>
-                <th>Salida</th>
-                <th>Llegada</th>
-                <th>Dia</th>
-                <th>Campos</th>
-                <th>Precio</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($rides as $ride): ?>
-            <tr>
-                <td><?php echo $ride['id_viaje']; ?></td>
-                <td><?php echo $ride['nombre'] . ' ' . $ride['apellidos']; ?></td>
-                <td><?php echo $ride['marca'] . ' ' . $ride['modelo']; ?></td>
-                <td><?php echo $ride['lugar_salida']; ?></td>
-                <td><?php echo $ride['lugar_llegada']; ?></td>
-                <td><?php echo $ride['dias_semana']; ?></td>
-                <td><?php echo $ride['espacios_disponibles']; ?></td>
-                <td><?php echo $ride['tarifa_espacio']; ?></td>
-                <td>
-                    <div class="action-buttons">
-                        <a href="rides_view.php?id=<?php echo $ride['id_viaje']; ?>" 
-                            class="btn-action btn-view" title="Ver">
-                            <i class="bi bi-eye-fill"></i>
-                        </a>
+        <table class="vehicles-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Chofer</th>
+                    <th>Vehiculo</th>
+                    <th>Viaje</th>
+                    <th>Salida</th>
+                    <th>Llegada</th>
+                    <th>Dia</th>
+                    <th>Campos</th>
+                    <th>Precio</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($rides as $ride): ?>
+                <tr>
+                    <td><?php echo $ride['id_viaje']; ?></td>
+                    <td><?php echo $ride['nombre'] . ' ' . $ride['apellidos']; ?></td>
+                    <td><?php echo $ride['marca'] . ' ' . $ride['modelo']; ?></td>
+                    <td><?php echo $ride['nombre_viaje']; ?></td>
+                    <td><?php echo $ride['lugar_salida']; ?></td>
+                    <td><?php echo $ride['lugar_llegada']; ?></td>
+                    <td><?php echo $ride['dias_semana']; ?></td>
+                    <td><?php echo $ride['espacios_disponibles']; ?></td>
+                    <td><?php echo $ride['tarifa_espacio']; ?></td>
+                    <td>
+                        <div class="action-buttons">
+                            <a href="rides_view.php?id=<?php echo $ride['id_viaje']; ?>" 
+                                class="btn-action btn-view" title="Ver">
+                                <i class="bi bi-eye-fill"></i>
+                            </a>
 
-                        <a href="rides_update.php?id=<?php echo $ride['id_viaje']; ?>" 
-                            class="btn-action btn-edit" title="Editar">
-                            <i class="bi bi-pencil-fill"></i>
-                        </a>
+                            <a href="rides_update.php?id=<?php echo $ride['id_viaje']; ?>" 
+                                class="btn-action btn-edit" title="Editar">
+                                <i class="bi bi-pencil-fill"></i>
+                            </a>
 
-                        <button
-                            class="btn-action btn-delete"
-                            title="Eliminar"
-                            onclick="confirmDelete(
-                                <?php echo htmlspecialchars($ride['id_viaje']); ?>,
-                                '<?php echo htmlspecialchars($ride['nombre_viaje']); ?>',
-                                '<?php echo htmlspecialchars($ride['nombre'] . ' ' . $ride['apellidos']); ?>'
-                            )">
-                            <i class="bi bi-trash-fill"></i>
-                        </button>
-                    </div>
-                </td>
-            </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
-</div>
-        <div class="empty-state" style="display: none;">
+                            <button
+                                class="btn-action btn-delete"
+                                title="Eliminar"
+                                onclick="confirmDelete(
+                                    <?php echo htmlspecialchars($ride['id_viaje']); ?>,
+                                    '<?php echo htmlspecialchars($ride['nombre_viaje']); ?>',
+                                    '<?php echo htmlspecialchars($ride['nombre'] . ' ' . $ride['apellidos']); ?>'
+                                )">
+                                <i class="bi bi-trash-fill"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+
+    <?php if (empty($rides)): ?>
+        <div class="empty-state">
             <i class="bi bi-car-front"></i>
             <h3>No hay rides registrados</h3>
-            <p>Comienza agregando tu primer ride</p>
-            <button class="btn-add-first" onclick="window.location.href='rides_create.php'">
-                <i class="bi bi-plus-circle"></i>
-                Agregar Ride
-            </button>
-        </div>
-    </div>
+        </div> 
+    <?php endif; ?>
 
     <!-- Modal de confirmación para eliminar -->
     <div class="modal fade" id="deleteModal" tabindex="-1">

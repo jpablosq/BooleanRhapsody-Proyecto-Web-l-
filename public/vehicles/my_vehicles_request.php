@@ -8,7 +8,7 @@ checkAuth();
 $usuario = $_SESSION["usuario"];
 
 // Obtener todos los registros del usuario
-$vehicles = getAllPendingOrDeclineVehicles($usuario['id_usuario']);
+$vehicles = getAllUserVehicles($usuario['id_usuario']);
 ?>
 
 <!DOCTYPE html>

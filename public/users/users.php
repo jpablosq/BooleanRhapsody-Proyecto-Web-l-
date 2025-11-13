@@ -44,17 +44,17 @@ $users = getAllUsers($usuario['id_usuario']);
 
         <!-- Encabezado -->
         <div class="header">
+            <a href="../index.php">
+                <button class="btn-back-create">
+                <i class="bi bi-arrow-left"></i>
+                </button>
+            </a>
             <div class="header-title">
                 <i class="bi bi-person"></i>
                 <h1>Gestión de Usuarios</h1>
             </div>
-            <button class="btn-back" onclick="window.location.href='register.php'">
+            <button class="btn-back" onclick="window.location.href='users_create.php'">
                 <i class="bi bi-person-plus"></i>
-                Nuevo Usuario
-            </button>
-            <button class="btn-back" onclick="window.location.href='../index.php'">
-                <i class="bi bi-arrow-left"></i>
-                Volver
             </button>
         </div>
 
@@ -92,14 +92,7 @@ $users = getAllUsers($usuario['id_usuario']);
                                         <i class="bi bi-pencil-fill"></i>
                                     </a>
 
-                                    <button
-                                        class="btn-action btn-delete"
-                                        title="Eliminar"
-                                        onclick="confirmDelete(
-                                            <?php echo htmlspecialchars($user['id_usuario']); ?>,
-                                            '<?php echo htmlspecialchars($user['nombre']); ?>',
-                                            '<?php echo htmlspecialchars($user['apellidos']); ?>'
-                                        )">
+                                    <button class="btn-action btn-delete" title="Eliminar" onclick="confirmDelete(<?php echo htmlspecialchars($user['id_usuario']); ?>, '<?php echo htmlspecialchars($user['nombre']); ?>', '<?php echo htmlspecialchars($user['apellidos']); ?>')">
                                         <i class="bi bi-trash-fill"></i>
                                     </button>
                                 </div>

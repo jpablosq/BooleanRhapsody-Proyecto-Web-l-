@@ -71,45 +71,23 @@ function createUser($nombre, $apellidos, $cedula, $fecha_nacimiento, $correo, $f
     return $stmt->execute([$nombre, $apellidos, $cedula, $fecha_nacimiento, $correo, $fotografia, $telefono, $nombre_usuario, $password_hash, $rol]);
 }
 
-function updateUser($id_usuario, $nombre, $apellidos, $cedula, $fecha_nacimiento, $correo, $fotografia, $telefono, $nombre_usuario, $contrasena, $rol) {
+function updateUser($id_usuario, $nombre, $apellidos, $cedula, $fecha_nacimiento, $correo, $telefono, $nombre_usuario, $rol) {
     $pdo = getConnection();
 
-    // Si se proporciona una nueva contraseña, la hasheamos
-    $password_hash = null;
-    if (!empty($contrasena)) {
-        $password_hash = hash('sha256', $contrasena);
-    }
-
-    // Construimos la consulta dinámica para actualizar solo los campos necesarios
-    $query = "UPDATE Usuarios SET 
+    $stmt = $pdo->prepare("UPDATE Usuarios SET 
         nombre = ?, 
         apellidos = ?, 
         cedula = ?, 
         fecha_nacimiento = ?, 
         correo = ?, 
-        fotografia = ?, 
         telefono = ?, 
         nombre_usuario = ?, 
-        rol = ?";
+        rol = ?
+        WHERE id_usuario = ?");
 
-    // Si la contraseña fue enviada, la incluimos en el update
-    if ($password_hash !== null) {
-        $query .= ", contrasena = ?";
-    }
-
-    $query .= " WHERE id_usuario = ?";
-
-    $stmt = $pdo->prepare($query);
-
-    // Armamos los parámetros en el orden correcto
-    $params = [$nombre, $apellidos, $cedula, $fecha_nacimiento, $correo, $fotografia, $telefono, $nombre_usuario, $rol];
-    if ($password_hash !== null) {
-        $params[] = $password_hash;
-    }
-    $params[] = $id_usuario;
-
-    return $stmt->execute($params);
+    return $stmt->execute([$nombre, $apellidos, $cedula, $fecha_nacimiento, $correo, $telefono, $nombre_usuario, $rol, $id_usuario]);
 }
+
 
 
 // Validar datos del usuario

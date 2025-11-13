@@ -14,7 +14,7 @@ $vehicle = getVehiclesById($id);
 
 if (!$vehicle) {
     $_SESSION['error'] = 'Vehiculo no encontrado';
-    header('Location: vehicles.php');
+    header('Location: my_vehicles.php');
     exit();
 }
 
@@ -49,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (updateVehicle($idVehicle, $marca, $modelo, $anio, $color, $placa, $foto)) {
         $_SESSION['success'] = 'Vehiculo actualizado exitosamente';
-        header('Location: vehicles.php');
+        header('Location: my_vehicles.php');
         exit();
     } else {
         $_SESSION['error'] = 'Error al actualizar el vehiculo';
@@ -74,7 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <i class="bi bi-pencil-square"></i>
                 <h1>Editar Vehículo</h1>
             </div>
-            <a href="vehicles.php" class="btn-back">
+            <a href="my_vehicles.php" class="btn-back">
                 <i class="bi bi-arrow-left"></i> Volver a Lista
             </a>
         </div>
@@ -83,7 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="content-grid">
                 <div class="vehicle-preview">
                     <div class="image-upload-container">
-                        <img src="uploads/<?php echo htmlspecialchars($vehicle['fotografia']); ?>" alt="Vehículo" class="vehicle-image" id="vehicleImage">
+                        <img src="../uploads/<?php echo htmlspecialchars($vehicle['fotografia']); ?>" alt="Vehículo" class="vehicle-image" id="vehicleImage">
                         <div class="image-overlay">
                             <label for="imageInput" class="upload-label">
                                 <i class="bi bi-camera-fill"></i>
@@ -93,11 +93,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </div>
                     </div>
                     
-                    <h2 class="vehicle-name" id="vehicleNamePreview"><?php echo htmlspecialchars($vehicle['marca']); ?> <?php echo htmlspecialchars($vehicle['modelo']); ?></h2>
+                    <h2 class="vehicle-name"><?php echo htmlspecialchars($vehicle['marca']); ?> <?php echo htmlspecialchars($vehicle['modelo']); ?></h2>
                     
                     <div class="vehicle-badges">
-                        <span class="badge badge-plate" id="platePreview"><?php echo htmlspecialchars($vehicle['placa']); ?></span>
-                        <span class="badge badge-year" id="yearPreview"><?php echo htmlspecialchars($vehicle['anio_fabricacion']); ?></span>
+                        <span class="badge badge-plate"><?php echo htmlspecialchars($vehicle['placa']); ?></span>
+                        <span class="badge badge-year"><?php echo htmlspecialchars($vehicle['anio_fabricacion']); ?></span>
                     </div>
                 </div>
 
@@ -174,22 +174,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 reader.readAsDataURL(file);
             }
         });
-
-        // Actualizar preview de marca y modelo
-        document.getElementById('marca').addEventListener('input', updateVehicleName);
-        document.getElementById('modelo').addEventListener('input', updateVehicleName);
-        document.getElementById('placa').addEventListener('input', function() {
-            document.getElementById('platePreview').textContent = this.value;
-        });
-        document.getElementById('anio').addEventListener('input', function() {
-            document.getElementById('yearPreview').textContent = this.value;
-        });
-
-        function updateVehicleName() {
-            const marca = document.getElementById('marca').value;
-            const modelo = document.getElementById('modelo').value;
-            document.getElementById('vehicleNamePreview').textContent = `${marca} ${modelo}`;
-        }
-    </script>
 </body>
 </html>

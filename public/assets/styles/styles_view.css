@@ -13,6 +13,7 @@
   --surface: #252837;
   --surface-light: #2d3148;
   --white: #ffffff;
+  --success-color: #22c55e;
   --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
   --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
   --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
@@ -88,40 +89,6 @@ body {
   box-shadow: var(--shadow-sm);
 }
 
-.btn-edit {
-  background: var(--warning-color);
-  color: var(--white);
-}
-
-.btn-edit:hover {
-  background: #d97706;
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
-}
-
-.btn-accept {
-  background: #d1fae5;
-  color: #065f46;
-}
-
-.btn-accept:hover {
-  background: #10b981;
-  color: white;
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
-}
-
-.btn-delete {
-  background: #fee2e2;
-  color: #991b1b;
-}
-
-.btn-delete:hover {
-  background: #ef4444;
-  color: white;
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
-}
 
 .btn-back {
   background: var(--surface-light);
@@ -301,11 +268,35 @@ body {
   box-shadow: var(--shadow-md);
 }
 
+.btn-accept {
+  background: var(--success-color);
+  color: var(--white);
+}
+
+.btn-accept:hover {
+  background: #16a34a;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
 /* Styles del modal */
 #deleteModal h5,
 #deleteModal p,
 #deleteModal strong {
   color: #000 !important;
+}
+
+#declineModal h5,
+#declineModal p,
+#declineModal strong,
+#declineModal label {
+    color: #000 !important;
+}
+
+#acceptModal h5,
+#acceptModal p,
+#acceptModal strong {
+    color: #000 !important;
 }
 
 @keyframes fadeIn {

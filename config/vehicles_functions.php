@@ -34,9 +34,16 @@ function getAllUserVehicles($id) {
 // Obtener vehiculos por ID
 function getVehiclesById($id) {
     $pdo = getConnection();
-    $stmt = $pdo->prepare("SELECT v.*, u.nombre, u.apellidos, u.nombre_usuario FROM vehiculos v INNER JOIN Usuarios u ON v.id_usuario = u.id_usuario WHERE v.id_vehiculo = ?");
+    $stmt = $pdo->prepare("SELECT v.*, u.nombre, u.apellidos, u.nombre_usuario, u.rol FROM vehiculos v INNER JOIN Usuarios u ON v.id_usuario = u.id_usuario WHERE v.id_vehiculo = ?");
     $stmt->execute([$id]);
     return $stmt->fetch();
+}
+
+// Crear nuevo vehiculos
+function createVehicle($id_usuario, $marca, $modelo, $anio, $color, $placa, $foto) {
+    $pdo = getConnection();
+    $stmt = $pdo->prepare("INSERT INTO vehiculos (id_usuario, marca, modelo, anio_fabricacion, color, placa, fotografia, descripcion) VALUES (?, ?, ?, ?, ?, ?, ?, 'En revisión')");
+    return $stmt->execute([$id_usuario, $marca, $modelo, $anio, $color, $placa, $foto]);
 }
 
 // Eliminar vehiculos
@@ -56,7 +63,9 @@ function updateVehicle($id, $marca, $modelo, $anio, $color, $placa, $foto) {
         anio_fabricacion = ?, 
         color = ?, 
         placa = ?, 
-        fotografia = ?
+        fotografia = ?,
+        estado = 'pendiente',
+        descripcion = 'En revisión'
     WHERE id_vehiculo = ?");
 
     return $stmt->execute([$marca, $modelo, $anio, $color, $placa, $foto, $id]);
@@ -102,4 +111,63 @@ function validateVehicles($marca, $modelo, $anio, $color, $placa) {
     }
 
 return $errors;
+}
+
+
+// Funciones de vehiculos - Registros
+// Obtener todos los vehiculos por el estado
+function getAllVehiclesByStatus($status) {
+    $pdo = getConnection();
+    $stmt = $pdo->prepare('SELECT v.*, u.nombre, u.apellidos, u.nombre_usuario
+    FROM vehiculos v
+    INNER JOIN usuarios u ON v.id_usuario = u.id_usuario
+    WHERE v.estado = ?');
+    $stmt->execute([$status]);
+    return $stmt->fetchAll();
+}
+
+function getAllPendingOrDeclineVehicles($id) {
+    $pdo = getConnection();
+    $stmt = $pdo->prepare('SELECT v.*, u.nombre, u.apellidos, u.nombre_usuario 
+        FROM vehiculos v
+        INNER JOIN usuarios u ON v.id_usuario = u.id_usuario
+        WHERE v.estado IN (\'rechazado\', \'pendiente\') AND v.id_usuario = ?');
+    $stmt->execute([$id]);
+    return $stmt->fetchAll();
+}
+
+// Asignar rol de chofer al usuario pasajero
+function SetDriverRole($id) {
+    $pdo = getConnection();
+    $vehicle = getVehiclesById($id);
+    if (!$vehicle) {
+        return false;
+    }
+    if ($vehicle['rol'] === 'Pasajero') {
+        $stmt = $pdo->prepare('UPDATE Usuarios SET rol = "Chofer" WHERE id_usuario = ?');
+        return $stmt->execute([$vehicle['id_usuario']]);
+    }
+    return false;
+}
+
+
+// Obtener todos los vehiculos pendientes
+function acceptVehicle($id) {
+    $pdo = getConnection();
+    $stmt = $pdo->prepare('UPDATE vehiculos SET estado = "aceptado", descripcion = "Cumple con todos los requisitos" WHERE id_vehiculo = ?');
+    $stmt->execute([$id]);
+
+    // Luego agregamos el vehículo solo si el UPDATE fue exitoso
+    if ($stmt->rowCount() > 0) {
+        SetDriverRole($id);
+        return true;
+    }
+
+    return false;
+}
+
+function declineVehicle($id, $motivo) {
+    $pdo = getConnection();
+    $stmt = $pdo->prepare('UPDATE vehiculos SET estado = "rechazado", descripcion = ?  WHERE id_vehiculo = ?');
+    return $stmt->execute([$motivo, $id]);
 }
